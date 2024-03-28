@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+   <style>
+      .header {
+         background: white;
+         background-size: cover;
+         height: 100px;
+         width: 100%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         text-align: center;
+         color: #fff;
+      }
+
+      .button-container {
+         margin-top: 12px;
+      }
+
+      .button {
+         display: inline-block;
+         border-radius: 4px;
+         background-color: #eaffea;
+         border: none;
+         color: #808080;
+         text-align: center;
+         font-size: 11px;
+         font-weight: bold;
+         padding: 10px 20px;
+         transition: all 0.5s;
+         cursor: pointer;
+         margin: 5px;
+      }
+
+      .button span {
+         cursor: pointer;
+         display: inline-block;
+         position: relative;
+         transition: 0.5s;
+      }
+
+      .button span:after {
+         content: '\00bb';
+         position: absolute;
+         opacity: 0;
+         top: 0;
+         right: -20px;
+         transition: 0.5s;
+      }
+
+      .button:hover span {
+         padding-right: 25px;
+      }
+
+      .button:hover span:after {
+         opacity: 1;
+         right: 0;
+      }
+   </style>
+   <!-- 에러 Exception evaluating SpringEL expression: "m.member_no" (template: "header.html" - line 61, col 15)-->
+   <!--<th:block th:with="member_id=${m.member_id}" />-->
+   <th:block th:with="member_id=${id}" />
+</head>
+
+<body>
+   <div class="header">
+      <div class="button-container">
+         <a th:href="@{/}" class="button"><span>홈으로</span></a>
+         
+         <th:if test="${id == null}">
+            <a th:href="@{/member/login}" class="button"><span>로그인</span></a>
+            <a th:href="@{/member/join}" class="button"><span>회원가입</span></a>
+         </th:if>
+
+         <th:if test="${id != null}">
+            <a th:href="@{/logout}" class="button"><span>로그아웃</span></a>
+            <a th:href="@{/member/mypage}" class="button"><span>마이페이지</span></a>
+         </th:if>
+            <th:if test="${m.role == 'admin'}">
+               <a th:href="@{/admin/adminpage}" class="button"><span>관리자페이지</span></a>
+               <a th:href="@{/admin/adminpage}" class="button"><span>회원목록</span></a>
+               <a th:href="@{/admin/adminpage}" class="button"><span>회원찾기</span></a>
+            </th:if>
+            <th:if test="${m.role == 1}">
+               <!-- 여기에 버스 관리자 페이지 및 버스 목록 링크 추가 -->
+            </th:if>
+            <th:if test="${m.role == 2}">
+               <!-- 여기에 호텔 관리자 페이지 및 호텔 목록 링크 추가 -->
+            </th:if>
+         </th:if>
+      </div>
+   </div>
+</body>
+
+</html>

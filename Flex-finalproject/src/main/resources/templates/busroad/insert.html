@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	function check(){
+		if (f.arrival.value==f.departure.value){
+			alert("출발지와 도착지가 같을순 없습니다")
+			f.departure.focus()
+			return
+		}
+		if (f.arrtime.value=="선택"){
+			alert("출발시간을 입력해주세요")
+			f.arrtime.focus()
+			return
+		}
+		if (f.tottime.value=="선택"){
+			alert("소요 시간을 입력해주세요")
+			f.tottime.focus()
+			return
+		}
+		document.f.submit()
+	}
+		
+	function dip_OnOff(v,id){// 복수 추가시 배차시간 보이게 하는 스크립트
+		if(v=="plural"){
+			document.getElementById(id).style.display=""; //보이기
+		}else{
+			document.getElementById(id).style.display="none"//안보이기
+		}
+	}
+</script>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>버스노선 등록</h2>
+	<hr>
+	<div align="center">
+		<form name="f" action="/busroad/insert" method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+			<h4>
+				*가격책정 방식*
+			</h4>
+			<h5>->일반:기본요금=5000원  x 소요시간</h5>
+			<h5>->우등:기본요금=8000원 x 소요시간</h5>
+			
+			<table width="50%" border="1">
+				<tr>
+					<td>
+					    <input type="radio" name="plus" value="singular" checked="checked" th:onclick="'dip_OnOff(\'singular\', \'dip\');'">단일추가
+					    <input type="radio" name="plus" value="plural" th:onclick="'dip_OnOff(\'plural\', \'dip\');'">복수추가
+					</td>
+				</tr>
+				<tr>
+				    <td>버스번호 : 
+				        <select name="busno">
+				            <!-- 등록된 버스가 없는 경우 -->
+				            <th:block th:if="${#lists.isEmpty(buslist)}">
+				                <option value="" disabled selected>등록된 버스가 없습니다.</option>
+				            </th:block>
+				            <!-- 등록된 버스가 있는 경우 -->
+				            <th:block th:if="${not #lists.isEmpty(buslist)}">
+				                <th:block th:each="no : ${buslist}">
+				                    <option th:value="${no.busno}" th:text="${no.busno}"></option>
+				                </th:block>
+				            </th:block>
+				        </select>
+				    </td>
+				</tr>
+				
+				<tr>
+				    <td>출발지 : 
+				        <select name="arrival">
+				            <option th:each="bs : ${list}" th:value="${bs.stationno}" th:text="${bs.stationname}"></option>
+				        </select>
+				    </td>
+				</tr>
+				<tr>
+				    <td>도착지 : 
+				        <select name="departure">
+				            <option th:each="bs : ${list}" th:value="${bs.stationno}" th:text="${bs.stationname}"></option>
+				        </select>
+				    </td>
+				</tr>
+				<tr>
+					<td>출발시간 : 
+						<select name="arrtime">
+								<option value="선택" selected>선택</option>
+							<option th:each="count : ${#numbers.sequence(1, 22)}" th:value="${count}" th:text="${count}"></option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>소요시간 : 
+						<select name="tottime">
+							<option value="선택" selected>선택</option>
+							<option th:each="count : ${#numbers.sequence(1, 5)}" th:value="${count}" th:text="${count}"></option>
+						</select>
+					</td>
+				</tr>
+				<tr id="dip" style="display:none">
+					<td>배차시간: 
+						<select name="dip_time">
+							<option value="선택" selected>선택</option>
+							<option th:each="count : ${#numbers.sequence(1, 10)}" th:value="${count}" th:text="${count}"></option>
+						</select>
+					</td>
+				</tr>
+				<tr align="right">
+					<td>
+						<input type="button" value="추가" onclick="javascript:check()">
+						<input type="reset" value="취소">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+<h2>상품목록</h2>
+<hr />
+<th:block th:if="${session.user.role}=='admin'">
+	<a href="/goods/insert">상품등록</a>
+</th:block>
+<a href="/cart/list">장바구니</a>
+<br />
+
+<table border="1" width="80%">
+	<tr>
+		<th>상품번호</th>
+		<th>상품명</th>
+		<th>가격</th>
+	</tr>
+	<tr th:each="g:${list}">
+		<td th:text="${g.no}"></td>
+		<td>
+			<a th:href="@{'/goods/detail/'+${g.no}}" th:text="${g.item}"></a>
+		</td>
+		<td th:text="${g.price}"></td>
+	</tr>
+</table>
+<div th:include="footer.html"></div>
+</body>
+</html>
+
+
+
+
+
+

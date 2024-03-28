@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>버스예약 목록</h2>
+	<hr>
+	<a href="/busresv/insert">버스예약등록</a>
+	<br>
+	<table border="1">
+		<tr>
+			<td>예약번호</td>
+			<td>아이디</td>
+			<td>버스 번호</td>
+			<td>노선 번호</td>
+			<td>자리</td>
+			<td>사용한 포인트</td>
+			<td>적립 포인트</td>
+			<td>예약 날짜</td>
+			<td>수정/삭제</td>
+		</tr> 
+
+		<tr th:if="${#lists.isEmpty(list)}">
+        	<td colspan="9">등록된 버스예약이 없습니다.</td>
+    	</tr>
+		<tr th:each="b: ${list}">
+			<td th:text="${b.resvno}"></td>
+			<td th:text="${b.id}"></td>
+			<td th:text="${b.busno}"></td>
+			<td th:text="${b.roadno}"></td>
+			<td th:text="${b.seat}"></td>
+			<td th:text="${b.usepoint}"></td>
+			<td th:text="${b.savepoint}"></td>
+			<td th:text="${b.resvdate}"></td>
+			<td>
+				<a th:href="@{'/busresv/delete/'+${b.resvno}}" th:text="삭제"></a>  |
+				<a th:href="@{'/busresv/update/'+${b.resvno}}" th:text="수정"></a>
+			</td>
+		</tr>
+	</table>
+	<hr>
+
+	<th:block th:each="i:${#numbers.sequence(1,totalPage)}">
+        <a th:href="@{'/busresv/list/'+${i}}" th:text="${i}"></a> 
+	</th:block>
+	<div th:include="footer.html"></div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">	
+	function check(){
+		//출발지,도착지,편도일시,왕복일시 유효성 검사 해야함 아직 안함
+		if (f.grade.value==""){
+			alert("등급을 선택해주세요")
+			f.grade.focus()
+			return
+		}
+		
+		document.f.submit()
+	}
+	 
+	function setDisplay(){ //편도 왕복 선택시 보이고 안보이고
+	    if($('input:radio[id=oneway]').is(':checked')){
+	        $('#two').hide();
+	        $('#one').show();
+	    }else if($('input:radio[id=twoway]').is(':checked')){
+	    	 $('#one').hide();
+		     $('#two').show();
+	    }
+	}
+</script>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div align="center">
+	<form name="f" action="/user_busresv/dispatch" method="get">
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+	<div style="border:1px solid gray; width:50%; float:center;">
+		<table	border="1">
+			<tr align="center">
+			    <td colspan="4" width="400">
+			        <input type="radio" id="oneway" th:name="mode" th:value="oneway" checked="checked" onclick="setDisplay()">편도
+        			<input type="radio" id="twoway" th:name="mode" th:value="twoway" onclick="setDisplay()">왕복
+			    </td>
+			</tr>
+			<tr align="left">
+				<td colspan="2">
+					<a href="/user_busresv/arrival">출발지</a>
+				</td>
+				<td colspan="2">
+					<a href="/user_busresv/departure">도착지</a>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div th:if="${arr_b != null and arr_b.stationname != null}">
+				        <input type="hidden" name="arrival" th:value="${arr_b.stationno}" />
+				        <span th:text="${arr_b.stationname}" th:if="${not #strings.isEmpty(arr_b.stationname)}"></span>
+				    </div>
+				</td>
+				<td colspan="2">
+					<div th:if="${dep_b != null and dep_b.stationname != null}">
+				        <input type="hidden" name="departure" th:value="${dep_b.stationno}" />
+				        <span th:text="${dep_b.stationname}" th:if="${not #strings.isEmpty(dep_b.stationname)}"></span>
+				    </div>
+				</td>
+			</tr>
+			
+			<tr id="one">
+				<td colspan="4" width="100%">날짜선택<input type="date" name="one_date" /></td>
+			</tr>
+			
+			<tr align="center" id="two" style="display:none"> 
+				<td colspan="2" width="50%">출발일<input type="date" name="arr_date"></td>
+				<td colspan="2" width="50%">도착일<input type="date"  name="dep_date"></td>
+			</tr>
+			<tr align="left">
+				<td>등급</td>
+				<td><input type="radio" name="grade" value="전체" >전체</td>
+				<td><input type="radio" name="grade" value="우등">우등</td>
+				<td><input type="radio" name="grade" value="일반">일반</td>
+			</tr>
+			<tr align="right">
+				<td colspan="4">
+					<input type="button" value="조회" onclick="javascript:check()">
+				</td>
+			</tr>
+		</table>
+	</div>
+</form>
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>장바구니</h2>
+	<br>
+	
+	<table border="1">
+		<tr>
+			<th></th>
+			<th>물품번호</th>
+			<th>수량</th>
+		</tr>
+		
+		<tr th:each="c : ${list}">
+				<input type="hidden" th:value="${c.no}" id="no"/>
+				<input type="hidden" th:value="${c.id}" id="id"/>
+			<td>
+				<div class="group green">
+					<input type="checkbox" id="unchecked_green" name ="check" class="td_check">
+				</div>
+			</td>
+			<td th:text="${c.gno}"></td>
+			<td th:text="${c.qty}"></td>
+		</tr>
+	</table>
+	
+	<a href="/orders/checkout">주문하기</a>
+	<div th:include="footer.html"></div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+	$(function(){
+		$("#btnCart").click(function(){
+			var no= $("#no").html();
+			location.href = "/cart/add/"+no;
+		});
+	});
+</script>
+
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>상품상세</h2>
+	<hr />
+	상품번호 : <span th:text="${g.no}" id="no"></span><br />	
+	상품이름 : <span th:text="${g.item}"></span><br />
+	상품수량 : <span th:text="${g.qty}"></span><br />
+	상품가격 : <span th:text="${g.price}"></span><br />
+	상품사진 : <br />
+	<img th:src="@{'/images/'+${g.fname}}" width="200" height="200"/>
+	<button id="btnCart">장바구니담기</button>
+	<div th:include="footer.html"></div>
+</body>
+</html>
+
+

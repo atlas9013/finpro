@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div align="center">
+    <hr color="green" width="300">
+    <div th:switch="${mode}">
+        <div th:case="'id'">
+            <h2>아이디 찾기</h2>
+        </div>
+        <div th:case="'passwd'">
+            <h2>비밀번호 찾기</h2>
+        </div>
+    </div>
+    <hr color="green" width="300">
+
+    <form name="f" action="/member/search" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="hidden" th:name="mode" th:value="${mode}">
+        <table width="50%" border="1">
+            <tr th:if="${mode == 'id'}">
+				<p>아이디 찾는 방법을 선택해 주세요.</p>
+				<!-- 휴대전화 영역 -->
+				<div id="phone"> 
+					<legend>회원정보에 등록한 휴대전화로 인증</legend>
+						<input type="radio" id="r_pn1" class="input_rd" name="certification" checked="" value="phone" onclick="selectType('phone');clickcr(this,'idf.memeberphone','','',event);">
+						<label for="r_pn1" class="label_rd">회원정보에 등록한 휴대전화로 인증</label>
+						<div class="box_inn_sub">
+							<dt><label for="phoneNm" class="label_txt">이름<!--이름--></label></dt>
+							<dd><input type="text" id="phoneNm" name="phoneNm" maxlength="40" class="input_txt" style="width:217px"></dd>
+							<dt><label for="t_pn1" class="label_txt">휴대전화</label></dt>
+							<dd>
+								<label for="nationNo" class="blind">국가 번호</label>
+								<span class="country_code">
+									<span class="sel_value" id="input_internationalCode">+82</span>
+									<select id="internationalCode" name="internationalCode" title="국가코드" class="country_sel" onchange="javascript:setInternationalCode('internationalCode','input_internationalCode','');">
+											  	 	<option value="82">대한민국 +82</option>
+									</select>
+								</span>
+								
+								<span class="int_mob">
+									<!-- [D] 인풋 포커스시 label에 클래스 on을 붙여주세요. -->
+									<label for="phoneNo" id="lbl_phoneNo" class="lbl_mob">휴대전화번호</label><input type="text" id="phoneNo" name="phoneNo" class="input_txt" style="width:147px" onfocus="toggle('on');" onblur="toggle('off');" onkeydown="check_num('phoneNo', '1')" maxlength="11">
+								</span>
+								<a href="#" id="btnPhoneAuthNo" name="btnPhoneAuthNo" class="btn_ct"><span class="blind">인증번호 받기</span></a>
+							</dd>
+							<dt><label for="t_ct1" class="blind">인증번호 입력</label></dt>
+							<dd class="ct">
+								<span class="input_box2">
+									<span id="span_phoneAuthNo" class="phold">인증번호 6자리 숫자 입력</span>
+									<input type="text" id="phoneAuthNo" name="phoneAuthNo" maxlength="6" onkeydown="check_num('phoneAuthNo', '1')" onclick="hiddenObj('span_phoneAuthNo')" class="input_txt" style="width:217px" disabled="">
+								</span>
+							</dd>	
+							</dl>
+						</div>		
+				</div>
+				<!-- 휴대전화 영역 -->
+				<!-- 이메일 영역 -->
+				<div id="div_email" class="box_inn"> <!-- [D] 선택시 selected 클래스 추가 -->
+						<input type="radio" id="r_pn2" class="input_rd" name="certification" value="email" onclick="selectType('email');clickcr(this,'idf.email','','',event);">
+						<label for="r_pn2" class="label_rd">본인확인 이메일로 인증</label>
+						<div class="box_inn_sub">
+							<dl>
+							<dt><label for="emailNm" class="label_txt">이름</label></dt>
+							<dd><input type="text" id="emailNm" name="emailNm" maxlength="40" class="input_txt" style="width:217px"></dd>
+							<dt><label for="email" class="label_txt">이메일 주소</label></dt>
+							<dd>
+								<input type="text" id="email" name="email" maxlength="100" class="input_txt" style="width:217px">
+								<a href="#" id="btnEmailAuthNo" name="btnEmailAuthNo" onclick="sendAuthNoForEmailAuth();clickcr(this,'eml.code','','',event);" class="btn_ct"><span class="blind">인증번호 받기</span></a>
+							</dd>
+							<dt><label for="t_ct1" class="blind">인증번호 입력</label></dt>
+							<dd class="ct">
+								<span class="input_box2">
+									<span id="span_emailAuthNo" class="phold" style="">인증번호 6자리 숫자 입력</span>
+									<input type="text" id="emailAuthNo" name="emailAuthNo" maxlength="6" onkeydown="check_num('emailAuthNo', '1')" onclick="hiddenObj('span_emailAuthNo')" class="input_txt" style="width:217px" disabled="">
+								</span>
+							</dd>	
+							</dl>
+						</div>		
+				</div>
+				<!-- 이메일 영역 -->
+			
+			</div>
+		</form>
+	</div>
+                <th>이름</th>
+                <td><input type="text" th:name="searchString" th:required="required"></td>
+            </tr>
+            <tr th:if="${mode == 'passwd'}">
+                <th>아이디</th>
+                <td><input type="text" th:name="searchString" th:required="required"></td>
+            </tr>
+            <tr>
+                <th>주민번호</th>
+                <td>
+                    <input type="text" th:name="jumin1" maxlength="6" th:required="required"> -
+                    <input type="password" th:name="jumin2" maxlength="7" required="required">
+                </td>
+            </tr>
+            <tr align="right">
+                <td colspan="2" align="center">
+                    <input type="submit" value="조회">
+                    <input type="reset" value="취소">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

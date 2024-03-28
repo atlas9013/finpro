@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<a href="/bus/list/1">버스리스트</a><br>
+	<a href="/busstation/list/1">버스터미널 리스트</a><br>
+	<a href="/busroad/list/1">버스노선 리스트</a><br>
+	<a href="/busroad/insert">버스노선 등록</a><br>
+	<a href="/busresv/list/1">버스예약 리스트</a><br>
+	<a href="/member/login">로그인</a><br>
+	<a href="/member/join">회원가입</a><br>
+	<a href="/logout">로그아웃</a><br>
+	-------------------------------
+	사용자화면<br />
+	<a href="/user_busstation/info">버스터미널 정보</a><br>
+	<a href="/user_busresv/lookup">lookup</a><br>
+	<a href="/user_busresv/arrival">버스 출발지</a><br>
+	<a href="/user_busresv/seat">좌석선택</a><br>
+</body>
+</html>

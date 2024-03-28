@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>버스 목록</h2>
+	<hr>
+	<a href="/bus/insert">버스등록</a>
+	<a href="/bus/list/1">버스목록</a>
+	<br>
+	<table border="1">
+		<tr>
+			<td>버스번호</td>
+			<td>버스등급</td>
+			<td>버스좌석수</td>
+			<td>수정/삭제</td>
+		</tr>
+		<tr th:if="${#lists.isEmpty(list)}">
+        	<td colspan="3">등록된 버스가 없습니다.</td>
+    	</tr>
+		<tr th:each="b: ${list}">
+			<td th:text="${b.busno}"></td>
+			<td th:text="${b.grade}"></td>
+			<td th:text="${b.seat}"></td>
+			<td>
+				<a th:href="@{'/bus/delete/'+${b.busno}}" th:text="삭제"></a>
+				<a th:href="@{'/bus/update/'+${b.busno}}" th:text="수정"></a>
+			</td>
+		</tr>
+	</table>
+	<hr>
+
+	<th:block th:each="i:${#numbers.sequence(1,totalPage)}">
+        <a th:href="@{'/bus/list/'+${i}}" th:text="${i}"></a> 
+	</th:block>
+	<div th:include="footer.html"></div>
+</body>
+</html>

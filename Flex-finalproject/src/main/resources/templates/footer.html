@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Footer</title>
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <style>
+        .footer {
+            position: relative;
+            background-image: url("/images/footer.png"); /* 경로 수정 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100px; /* 이미지의 높이 조절 */
+            color: black; /* 텍스트 색상 */
+            padding: 40px; /* 필요에 따라 여백 조절 */
+            padding-bottom: 60px;
+            text-align: right; /* 텍스트를 오른쪽 정렬 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 푸터 섹션 -->
+    <div class="footer">
+        <h2>FLEX</h2>
+        <p>대표: 김지수, 박소현</p>
+        <p>서울시 마포구 월드컵북로 21 풍성빌딩 2층 FLEX</p>
+        <p>Tel: 02-1234-5678</p>
+        <p>Fax: 02-1234-5679</p>
+    </div>
+</body>
+</html>

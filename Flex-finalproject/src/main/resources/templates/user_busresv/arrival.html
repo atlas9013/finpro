@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>출발지 선택 페이지</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+	<div th:include="header.html"></div>
+    <div>
+        <div align="center" style="width:100%;">
+            <div align="center" style="width:100%; background: lightgray;">
+                <h2>출발지선택</h2>
+            </div>
+            
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <form action="/user_busresv/arrival_find">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="searchString" placeholder="검색어 입력">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">찾기</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- 검색 -->
+            </div>
+            
+            <form action="/user_busresv/arrival" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                
+                <div align="center" style="border:1px solid blue;width:50%;  background:#EFF5FB;">
+				    <h3>출발지</h3>
+				    <table border="1">
+				        <tr>
+				            <td width="4000" th:if="${arr_b != null}">
+				                <input type="hidden" name="arrival" th:value="${arr_b.stationno}">
+				                <span th:text="${arr_b.stationname}"></span>
+				            </td>
+				        </tr>
+				    </table>
+				</div><!-- 출발지 -->
+				<br>
+				
+                <div align="center">
+				    <table border="1" style="width: 50%;" align="center">
+						<!--find_station 리스트가 null이 아니고 비어 있지 않은 경우에만-->
+				        <th:block th:if="${find_station != null}">
+				            <tr th:each="list : ${find_station}">
+				                <td>
+									<a th:href="@{'/user_busresv/arrival_select/' +${list.stationno}}" th:text="${list.stationname}" th:value="${list.stationno}"></a>
+				                </td>
+				            </tr>
+				        </th:block>
+				        <th:block th:if="${find_station == null}">
+				            <tr th:each="b : ${busstation_list}">
+				                <td>
+									<a th:href="@{'/user_busresv/arrival_select/' + ${b.stationno}}" th:text="${b.stationname}" th:value="${b.stationno}"></a>
+				                </td>
+				            </tr>
+				        </th:block>
+				    </table>
+				    <input type="submit" value="선택">
+				</div><!-- 터미널 출발지 버튼 -->
+            </form>
+        </div>
+    </div>
+    <div th:include="footer.html"></div>
+</body>
+</html>

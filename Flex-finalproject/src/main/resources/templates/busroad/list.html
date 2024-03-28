@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>버스노선 목록</h2>
+	<hr>
+	<a href="/busroad/insert">버스노선 등록</a>
+	<br>
+	<table border="1">
+		<tr>
+			<th>노선번호</th>
+			<th>버스번호</th>
+			<th>노선 등록 회원</th>
+			<th>출발지</th>
+			<th>도착지</th>
+			<th>가격</th>
+			<th>출발시간</th>
+			<th>도착시간</th>
+			<th>수정/삭제</th>
+		</tr>
+		<tr th:if="${#lists.isEmpty(list)}">
+        	<td colspan="3">등록된 버스가 없습니다.</td>
+    	</tr>
+		<tr th:each="b: ${list}">
+		    <td th:text="${b.roadno}"></td>
+		    <td th:text="${b.busno}"></td>
+		    <td th:text="${b.id}"></td>
+		    <td th:text="${b.arrival}"></td>
+		    <td th:text="${b.departure}"></td>
+		    <td th:text="${b.price}"></td>
+		    <td th:text="${b.arrtime}"></td>
+		    <td th:if="${b.tottime + b.arrtime > 24}" th:text="${b.arrtime + b.tottime - 24}"></td>
+		    <td th:if="${b.tottime + b.arrtime <= 24}" th:text="${b.tottime + b.arrtime}"></td>
+		    <td>
+				<th:block th:if="${user.role == 'alladmin'}">
+					<a th:href="@{'/busroad/update/'+${b.roadno}}" th:text="수정"></a> | 
+					<a th:href="@{'/busroad/delete/'+${b.roadno}}" th:text="삭제"></a>
+				</th:block>
+				<th:block th:if="${user.role == 'admin'}">
+					<th:block th:if="${b.id == user.id}">
+						<a th:href="@{'/busroad/update/'+${b.roadno}}" th:text="수정"></a> | 
+						<a th:href="@{'/busroad/delete/'+${b.roadno}}" th:text="삭제"></a>
+					</th:block>
+				</th:block>
+			</td>
+		</tr>
+	</table>
+	<hr>
+	<th:block th:each="i:${#numbers.sequence(1,totalPage)}">
+        <a th:href="@{'/busroad/list/'+${i}}" th:text="${i}"></a> 
+	</th:block>
+	<div th:include="footer.html"></div>
+</body>
+</html>

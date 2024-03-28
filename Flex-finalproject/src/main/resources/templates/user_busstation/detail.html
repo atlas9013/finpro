@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div align="center" >
+		<table border="1">
+		    <tr align="center">
+		        <td width="500" th:text="${b.stationname}"></td>
+		    </tr>
+		    <tr height="200" align="center">
+		        <td>
+					<img th:src="@{'/images/terminal/'+${b.filename}}" width="500" height="200">
+				</td>
+		    </tr>
+		    <tr align="center">
+		        <td>api 지도</td>
+		    </tr>
+		    <tr align="center">
+		        <td th:text="${b.address}"></td>
+		    </tr>
+		</table>
+		<table border="1">
+			<tr align="center">
+				<td width="500">주변호텔</td>
+			</tr>
+			<tr>
+									
+
+				
+			</tr>
+		</table>
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

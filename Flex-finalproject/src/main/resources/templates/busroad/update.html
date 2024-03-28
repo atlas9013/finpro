@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>버스노선 수정</h2>
+	<hr>
+	<div align="center">
+		<form action="/busroad/update" method="post">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+			<input type="hidden" name="roadno" th:value="${br.roadno }">
+			<input type="hidden" name="id" th:value="${br.id }">
+			<table width="50%" border="1">
+				<tr>
+					<td>버스번호 : 
+					<select name="busno">
+						<option th:text="${br.busno}" th:value="${br.busno}" selected></option>
+		                <th:block th:each="no : ${buslist}">
+		                    <option th:value="${no.busno}" th:text="${no.busno}"></option>
+		                </th:block>
+				</tr>
+				<tr>
+					<td>출발지 : 
+					    <select name="arrival">
+					        <th:block th:each="list : ${busstation_list}">
+					            <option th:if="${br.arrival == list.stationno}" th:value="${list.stationno}" th:text="${list.stationname}" selected></option> <!-- 선택한 옵션 표시 -->
+					            <option th:unless="${br.arrival == list.stationno}" th:value="${list.stationno}" th:text="${list.stationname}"></option> <!-- 선택한 옵션 제외한 나머지 옵션 표시 -->
+					        </th:block>
+					    </select>
+					</td>
+				</tr>
+				<tr>
+					<td>출발지 : 
+					    <select name="departure">
+					        <th:block th:each="list : ${busstation_list}">
+					            <option th:if="${br.departure == list.stationno}" th:value="${list.stationno}" th:text="${list.stationname}" selected></option> <!-- 선택한 옵션 표시 -->
+					            <option th:unless="${br.departure == list.stationno}" th:value="${list.stationno}" th:text="${list.stationname}"></option> <!-- 선택한 옵션 제외한 나머지 옵션 표시 -->
+					        </th:block>
+					    </select>
+					</td>
+				</tr>
+				<tr>
+					<td>가격 : <input type="text" name="price" th:value="${br.price}" /></td>
+				</tr>
+				<tr>
+					<td>출발시간 : <input type="text" name="arrtime" th:value="${br.arrtime}" /></td>
+				</tr>
+				<tr>
+					<td>소요시간 : <input type="text" name="tottime" th:value="${br.tottime}" /></td>
+				</tr>
+				<tr align="right">
+					<td><input type="submit" value="수정"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

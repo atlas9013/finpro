@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<head>
+  <title>BUS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+        .jumbotron {
+        	background-image: url('images/bus.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center; 
+            color: white; /* text color */
+            opacity: 0.7;
+        }
+  </style>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="jumbotron">
+    <h1 class="display-1" align="center">BUS</h1>
+</div>
+  
+<div class="container-fluid bg-3 text-center">    
+  <h3>BUS</h3><br>
+	<th:block th:if="${#lists.isEmpty(busstation_list)}">
+		등록된 터미널 정보가 없습니다.
+	</th:block>
+	<div class="row">
+	  <th:block th:each="b: ${busstation_list}">
+  	      <div class="col-sm-3">
+      		<p><a th:href="@{'/user_busstation/detail/'+${b.stationno}}" th:text="${b.stationname}"></a></p>
+      		<img th:src="@{'/images/terminal/'+${b.filename}}" class="img-responsive" style="height: 300px;" alt="Image">
+    	    <a th:href="@{'/user_busstation/map/'+${b.stationno}}" th:text="${b.stationname}+'지도'"></a>
+    	  </div>
+      </th:block>  
+    </div>
+</div><br>
+
+<div th:include="footer.html"></div>
+</body>
+</html>

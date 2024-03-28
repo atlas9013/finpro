@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>상품등록</h2>
+	<hr>
+	<form action="/goods/insert" method="post" enctype="multipart/form-data">
+	<input type="hidden" th:name="${_csrf.parameterName}" 
+							 th:value="${_csrf.token}" />
+		상품번호 : <input type="text" name="no"/><br />
+		상품이름 : <input type="text" name="item"/><br />
+		상품가격 : <input type="text" name="price"/><br />
+		상품수량 : <input type="text" name="qty"/><br />
+		상품사진 : <input type="file" name="uploadFile"/><br />
+		<input type="submit" value="등록"/>
+		<input type="reset" value="다시입력"/>	 
+	</form>
+	<div th:include="footer.html"></div>
+</body>
+</html>

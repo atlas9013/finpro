@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>버스등록</h2>
+	<hr>
+	<div align="center">
+		<form name="f" action="/bus/insert" method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+			<table width="50%" border="1">
+				<tr>
+					<td>버스등급 : 
+					<select th:name="grade">
+					    <option value="" disabled selected>선택</option>
+					    <option th:value="일반">일반</option>
+					    <option th:value="우등">우등</option>
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td>버스좌석수 : <input type="text" name="seat"></td>
+				</tr>
+				<tr align="right">
+					<td>
+						<input type="submit" value="등록"> 
+						<input type="reset" value="취소">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

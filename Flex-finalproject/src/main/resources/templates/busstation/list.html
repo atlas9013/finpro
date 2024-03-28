@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h2>버스 목록</h2>
+	<hr>
+	<a href="/busstation/insert">터미널 등록</a>
+	<br>
+	<table width="100%" border="1">
+		<tr align="center">
+			<th>터미널번호</th>
+			<th>터미널이름</td>
+			<th>터미널주소</th>
+			<th>파일</th>
+			<th>수정/삭제</th>
+		</tr>
+		<tr th:if="${#lists.isEmpty(list)}">
+        	<td colspan="3">등록된 터미널이 없습니다.</td>
+    	</tr>
+		<tr th:each="b: ${list}">
+			<td th:text="${b.stationno}"></td>
+			<td th:text="${b.stationname}"></td>
+			<td th:text="${b.address}"></td>
+			<td>
+				<img th:src="@{'/images/terminal/'+${b.filename}}" width="100" height="100">
+			</td>
+			<td><a th:href="@{'/busstation/delete/'+${b.stationno}}" th:text="삭제"></a>
+				<a th:href="@{'/busstation/update/'+${b.stationno}}" th:text="수정"></a></td>
+		</tr>
+	</table>
+	<hr>
+	<div th:include="footer.html"></div>
+</body>
+</html>
