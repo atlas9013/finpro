@@ -12,7 +12,7 @@ import lombok.Setter;
 
 @Entity
 @Data
-@Table(name = "busbusroad")
+//@Table(name = "busbusroad")
 @Setter
 @Getter
 @AllArgsConstructor 

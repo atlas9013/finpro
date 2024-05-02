@@ -18,6 +18,11 @@ public class BusService {
 	public List<Bus> listBus(){
 		return dao.findAllByOrderByBusno();
 	}
+	
+	public List<Bus> ADlistBus(String id){
+		return dao.ADlistBus(id);
+	}
+	
 	public List<Bus> bus_list_count(int start,int end){
 		return dao.bus_list_count(start,end);
 	}
@@ -37,7 +42,7 @@ public class BusService {
 	public int count() {
 		return (int)dao.count();
 	}
-	public Bus insertBus_normal() {
+	public int insertBus_normal() {
 		return dao.insertBus_normal();
 	}
 	

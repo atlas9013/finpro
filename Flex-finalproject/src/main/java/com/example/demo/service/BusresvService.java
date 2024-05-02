@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -41,7 +42,7 @@ public class BusresvService {
 		return dao.busresv_list_count(start, end);
 	}
 
-	public List<BusResv_BusRoad> resvlist(String id){
+	public List<Map<String, Object>> resvlist(String id){
 		return dao.resvlist(id);
 	}
 	
@@ -53,7 +54,7 @@ public class BusresvService {
 		return (int)dao.count();
 	}
 	
-	public List<BusBusRoad> list_seat_resv_user(int arrival, int departure, String grade){
+	public List<Map<String, Object>> list_seat_resv_user(int arrival, int departure, String grade){
 		return dao.list_seat_resv_user(arrival, departure, grade);
 	}
 	
@@ -61,7 +62,7 @@ public class BusresvService {
 		return dao.listDispatch_resv_count(arrival, departure, grade, start, end);
 	}
 	
-	public List<BusBusRoad> listDispatch_resv_reverse_count1(int departure, int arrival, String grade){
+	public List<Map<String, Object>> listDispatch_resv_reverse_count1(int departure, int arrival, String grade){
 		return dao.listDispatch_resv_reverse_count1(departure, arrival, grade);
 	}
 	
@@ -73,7 +74,7 @@ public class BusresvService {
 		return dao.listDispatch_resv_reverse(departure, arrival, grade);
 	}
 	
-	public List<BusBusRoad> listDispatch_resv_all(int arrival, int departure){
+	public List<Map<String, Object>> listDispatch_resv_all(int arrival, int departure){
 		return dao.listDispatch_resv_all(arrival, departure);
 	}
 	
@@ -85,7 +86,7 @@ public class BusresvService {
 		return dao.listDispatch_resv_all_count(arrival, departure, start, end);
 	}
 	
-	public List<BusBusRoad> listDispatch_resv_all_reverse(int departure, int arrival){
+	public List<Map<String, Object>> listDispatch_resv_all_reverse(int departure, int arrival){
 		return dao.listDispatch_resv_all_reverse(departure, arrival);
 	}
 	
@@ -93,7 +94,7 @@ public class BusresvService {
 		return dao.listDispatch_resv_all_reverse_count(departure, arrival, start, end);
 	}
 	
-	public BusBusRoad resv_user_seat_select(int roadno){
+	public Map<String, Object> resv_user_seat_select(int roadno){
 		return dao.resv_user_seat_select(roadno);
 	}
 	

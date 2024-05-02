@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+   $(function(){
+      $("#btnOK").click(function(){
+         location.href="/user_busresv/resvlist";
+      });
+   });
+</script>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
+   <h2>결제완료하였습니다.</h2>
+   <hr>
+   <button id="btnOK">확인</button>
+   <br />
+   <br />
+   <br />
+   <br />
+   <br />
+   <br />
+   <br />
+   <br />
+   <br />
+   <br />
+   <div th:include="footer.html"></div>
+   </div>
+</body>
+</html>

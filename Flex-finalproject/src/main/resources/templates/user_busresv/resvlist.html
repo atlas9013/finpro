@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+</head>
+<body>
+	<!-- 환불 성공 시에만 alert 창이 나타납니다. -->
+    <div th:if="${refundSuccess}">
+        <script>
+            alert("환불이 완료되었습니다.");
+        </script>
+    </div>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<div align="center">
+	<table width="100%" class="table">
+		<thead class="table-primary">
+		<tr align="center">
+			<th>노선번호</th>
+			<th>버스번호</th>
+			<th>출발지</th>
+			<th>도착지</th>
+			<th>출발시간</th>
+			<th>도착시간</th>
+			<th>좌석</th>
+			<th>가격</th>
+			<th>출발일</th>
+			<th>환불</th>
+		</tr>
+		</thead>
+		<th:block th:if="${#lists.isEmpty(resv_list)}">
+			<tr align="center">
+		    	<td colspan="10">예약한 목록이 없습니다</td>
+			</tr>
+		</th:block>
+		<tr th:each="b : ${resv_list}" align="center">
+	        <td th:text="${b.roadno}"></td>
+	        <td th:text="${b.busno}"></td>
+	        <td th:text="${b.arrival}"></td>
+	        <td th:text="${b.departure}"></td>
+	        <td th:text="${b.arrtime} + '시'"></td>
+	        <td th:text="${b.tottime + b.arrtime > 24 ? b.tottime + b.arrtime - 24 + '시' : b.tottime + b.arrtime + '시'}"></td>
+	        <td th:text="${b.seat}"></td>
+	        <td th:text="${b.price}"></td>
+	        <td th:text="${b.resvdate}"></td>
+	        <td>
+				<a th:href="@{'/user_busresv/refund/' + ${b.resvno}}" th:text="환불"/>
+			</td>
+		</tr>
+	</table>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

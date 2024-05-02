@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<head>
+<meta charset="UTF-8">
+<title>호텔검색</title>
+</head>
+<style>
+.container {
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+.center {
+    text-align: center;
+}
+.pagination {
+    display: inline-block;
+    text-align: center; 
+}
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+}
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+.pagination-container {
+    text-align: center; /* 버튼을 가운데 정렬 */
+}
+	input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(function(){
+    $("tr:gt(4)").hide(); // 처음에는 5번째 행부터 숨김
+    $("#load").click(function(e){
+        e.preventDefault();
+        $("tr:hidden").slice(0, 10).show(); // 클릭할 때마다 10개의 숨은 행을 보여줌
+        if($("tr:hidden").length === 0){
+            alert("더 이상 항목이 없습니다.");
+        }
+    });
+});
+</script>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<br />
+<br />
+<div align="center">
+	<form action="/hotel_resv/resvlist">
+		<table class="table">
+			<tr>
+				<th><label>지역</label></th>
+				<td>
+				    <select name="address">
+				        <option th:text="서울" th:value="서울" th:selected="${address == '서울'}"></option>
+				        <option th:text="경기" th:value="경기" th:selected="${address == '경기'}"></option>
+				        <option th:text="대전" th:value="대전" th:selected="${address == '대전'}"></option>
+				        <option th:text="대구" th:value="대구" th:selected="${address == '대구'}"></option>
+				        <option th:text="부산" th:value="부산" th:selected="${address == '부산'}"></option>
+				        <option th:text="울산" th:value="울산" th:selected="${address == '울산'}"></option>
+				        <option th:text="강원" th:value="강원" th:selected="${address == '강원'}"></option>
+				        <option th:text="인천" th:value="인천" th:selected="${address == '인천'}"></option>
+				    </select>
+				</td>
+				<th><label>체크 인</label></th>
+				<td> 
+					<input type="text" name="startresvdate" id="startresvdate" th:value="${startresvdate}">
+				</td>
+				<th> 
+				<label>체크 아웃</label>
+				</th>
+				<td> 
+					<input type="text" name="endresvdate" id="endresvdate" th:value="${endresvdate}">
+				</td>
+				<th><label>객실</label></th>
+				<td> 
+					<select name="roomsu">
+						<option th:value="1" th:selected="${roomsu == 1}">1개</option>
+						<option th:value="2" th:selected="${roomsu == 2}">2개</option>
+						<option th:value="3" th:selected="${roomsu == 3}">3개</option>
+						<option th:value="4" th:selected="${roomsu == 4}">4개</option>
+						<option th:value="5" th:selected="${roomsu == 5}">5개</option>
+						<option th:value="6" th:selected="${roomsu == 6}">6개</option>
+						<option th:value="7" th:selected="${roomsu == 7}">7개</option>
+						<option th:value="8" th:selected="${roomsu == 8}">8개</option>
+						<option th:value="9" th:selected="${roomsu == 9}">9개</option>
+						<option th:value="10" th:selected="${roomsu == 10}">10개</option>
+				</select></td>
+				<th><label>인원</label></th>
+				<td><select name="sleeps">
+						<option th:value="2" th:selected="${sleeps == 2}">2명</option>
+						<option th:value="3" th:selected="${sleeps == 3}">3명</option>
+						<option th:value="4" th:selected="${sleeps == 4}">4명</option>
+						<option th:value="5" th:selected="${sleeps == 5}">5명</option>
+						<option th:value="6" th:selected="${sleeps == 6}">6명</option>
+						<option th:value="7" th:selected="${sleeps == 7}">7명</option>
+						<option th:value="8" th:selected="${sleeps == 8}">8명</option>
+						<option th:value="9" th:selected="${sleeps == 9}">9명</option>
+						<option th:value="10" th:selected="${sleeps == 10}">10명</option>
+				</select></td>
+				<td>
+					<button type="submit">검색</button>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<br />
+<div class="center">
+<button style="background-color: #ECF0DF; border-radius: 30px;">
+    <a th:href="@{'/hotel/list/1?startresvdate=' + ${startresvdate} + '&endresvdate=' + ${endresvdate}}"
+       th:text="호텔검색하기">
+    </a>
+</button>
+</div>
+<br />
+<div align="center">
+<table class="table">
+	<thead class="table-primary">
+      <tr>
+         <th width="25%">사진</th>
+         <th>호텔이름</th>
+         <th width="20%">주소</th>
+         <th width="10%">연락처</th>
+         <th width="4%">성급</th>
+         <th width="30%">객실</th>
+      </tr>
+      </thead>
+      <tr th:if="${#lists.isEmpty(hotelList)}">
+           <td colspan="7">등록된 게시글이 없습니다.</td>
+       </tr>
+       <tr th:each="list, idx : ${hotelList}">
+          <div th:if="${roomInfo[list.hotelno] != null}">
+          <td>
+              <img width="250px" height="200px" th:src="'/images/hotels/' + ${filenames[idx.index]}" />
+          </td>
+          <td th:text="${list.name}">
+          </td>
+          <td th:text="${list.address}"></td>
+          <td th:text="${list.phone}"></td>
+          <td th:text="${list.star}"></td>
+          <td>
+            <div th:each="r : ${roomInfo[list.hotelno]}">
+				<div th:if="${r.sleeps == sleeps}">
+                  <span th:text="${r.name} + ' - ' + ${r.sleeps} + '명'"></span>&nbsp;
+                  <span th:text="${r.price} + '원'"></span><br />
+                  <a th:href="@{'/hotel_resv/roomcontent/' + ${list.hotelno} + '/' + ${r.roomno}}">
+                      <input type="button" value="객실선택"><br />
+                  </a>
+                  </div>
+            </div>
+          </div>
+          </td>
+      </tr>
+   </table>
+   <div class="pagination-container">
+   <div class="pagination" align="center">
+        <a href="#" id="load">더 보기</a>
+   </div>
+   </div>
+	</div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

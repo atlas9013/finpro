@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>호텔정보수정</title>
+<style>
+	input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+</style>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<br />
+<form action="/hotel/update" method="post" enctype="multipart/form-data">
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+	<table width="600" align="center" class="outline" border="1">
+		<input type="hidden" name="hotelno" th:value="${hotel.hotelno}">
+		<input type="hidden" name="filename" th:value="${hotel.filename}">
+		<tr>
+			<td>호텔 이름</td>
+			<td><input type="text" name="name" th:value="${hotel.name}"></td>
+		</tr>
+		<tr>
+			<td>주소</td>
+			<td><input type="text" name="address" th:value="${hotel.address}"></td>
+		</tr>
+		<tr>
+			<td>호텔 연락처</td>
+			<td>
+				<input type="text" name="phone" th:value="${hotel.phone}">
+			</td>
+		</tr>
+		<tr>
+			<td>호텔 MANAGER 아이디</td>
+			<td><input type="text" name="id" th:value="${hotel.id}"></td>
+		</tr>
+		<tr>
+			<td>호텔 정보</td>
+			<td><textarea rows="6" cols="30" name="info" th:value="${hotel.info}" th:text="${hotel.info}"></textarea></td>
+		</tr>
+		<tr>
+			<td>호텔 성급</td>
+			<td><input type="text" name="star" th:value="${hotel.star}"></td>
+		</tr>
+		<tr>
+			<td>호텔사진:<input multiple="multiple" type = "file" name = "uploadFile"><br />
+				<span th:utext="${#strings.replace(hotel.filename, '/', '<br>')}"></span></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="right">
+				<input type="submit" value="수정">
+				<input type="reset" value="취소">
+			</td>
+		</tr>
+	</table>
+</form>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

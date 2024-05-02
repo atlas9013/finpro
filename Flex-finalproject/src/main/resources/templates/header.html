@@ -1,98 +1,152 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
-	<link rel="stylesheet" th:href="@{/css/style.css}" />
-   <style>
-      .header {
-         background: white;
-         background-size: cover;
-         height: 100px;
-         width: 100%;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         text-align: center;
-         color: #fff;
-      }
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
+    <!-- Google Fonts -->
+	<link href="http://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic,700itali" rel="stylesheet">
+	<link href="http://fonts.googleapis.com/css?family=Raleway:400,900,800,700,500,200,100,600" rel="stylesheet">
+	<!--<link rel="stylesheet" th:href="@{/css/style.css}" />-->
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="/css/bootstrap/bootstrap.css">
+	<link rel="stylesheet" href="/css/misc.css">
+	<link rel="stylesheet" href="/css/green-scheme.css">
+	
+	<!-- JavaScripts -->
+	<script src="/js/jquery-1.10.2.min.js"></script>
+	<script src="/js/jquery-migrate-1.2.1.min.js"></script>
+	<script src="/js/min/plugins.min.js"></script>
+	<script src="/js/min/medigo-custom.min.js"></script>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 
-      .button-container {
-         margin-top: 12px;
-      }
-
-      .button {
-         display: inline-block;
-         border-radius: 4px;
-         background-color: #eaffea;
-         border: none;
-         color: #808080;
-         text-align: center;
-         font-size: 11px;
-         font-weight: bold;
-         padding: 10px 20px;
-         transition: all 0.5s;
-         cursor: pointer;
-         margin: 5px;
-      }
-
-      .button span {
-         cursor: pointer;
-         display: inline-block;
-         position: relative;
-         transition: 0.5s;
-      }
-
-      .button span:after {
-         content: '\00bb';
-         position: absolute;
-         opacity: 0;
-         top: 0;
-         right: -20px;
-         transition: 0.5s;
-      }
-
-      .button:hover span {
-         padding-right: 25px;
-      }
-
-      .button:hover span:after {
-         opacity: 1;
-         right: 0;
-      }
-   </style>
-   <!-- 에러 Exception evaluating SpringEL expression: "m.member_no" (template: "header.html" - line 61, col 15)-->
-   <!--<th:block th:with="member_id=${m.member_id}" />-->
-   <th:block th:with="member_id=${id}" />
 </head>
-
+<style>
+    li {
+        list-style-type: none;
+    }
+    body {
+            padding-top: 150px; /* 헤더의 높이만큼 페이지의 위쪽 여백을 추가 */
+        }
+        .site-header {
+            position: fixed; /* 헤더를 고정 */
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* 다른 요소 위에 헤더를 표시 */
+        }
+</style>
 <body>
-   <div class="header">
-      <div class="button-container">
-         <a th:href="@{/}" class="button"><span>홈으로</span></a>
-         
-         <th:if test="${id == null}">
-            <a th:href="@{/member/login}" class="button"><span>로그인</span></a>
-            <a th:href="@{/member/join}" class="button"><span>회원가입</span></a>
-         </th:if>
+   <div class="responsive_menu">
+        <ul class="main_menu">
+            <li><a href="/">Home</a></li>
+            	<ul>
+            		<li><a href="/user_busstation/info">Bus</a></li>
+            		<li><a href="/hotel_resv/hotel_resv">Hotel</a></li>
+            		<li><a href="/hotel_board/hotel_list/1">Board</a></li>
+            	</ul>
+            </li>
+            <li><a href="/home">Admin Page</a>
+            <li><a href="/member/mypage">MyPage</a>
+            <li><a href="/member/login">login</a>
+        </ul> <!-- /.main_menu -->
+    </div> <!-- /.responsive_menu -->
 
-         <th:if test="${id != null}">
-            <a th:href="@{/logout}" class="button"><span>로그아웃</span></a>
-            <a th:href="@{/member/mypage}" class="button"><span>마이페이지</span></a>
-         </th:if>
-            <th:if test="${m.role == 'admin'}">
-               <a th:href="@{/admin/adminpage}" class="button"><span>관리자페이지</span></a>
-               <a th:href="@{/admin/adminpage}" class="button"><span>회원목록</span></a>
-               <a th:href="@{/admin/adminpage}" class="button"><span>회원찾기</span></a>
-            </th:if>
-            <th:if test="${m.role == 1}">
-               <!-- 여기에 버스 관리자 페이지 및 버스 목록 링크 추가 -->
-            </th:if>
-            <th:if test="${m.role == 2}">
-               <!-- 여기에 호텔 관리자 페이지 및 호텔 목록 링크 추가 -->
-            </th:if>
-         </th:if>
-      </div>
-   </div>
+	<header class="site-header clearfix">
+		<div class="container">
+
+			<div class="row">
+
+				<div class="col-md-12">
+
+					<div class="pull-left logo">
+						<a href="/">
+							<img src="/images/logo.png" height="60px" width="80px" hight="50px" alt="Medigo by templatemo">
+						</a>
+					</div>	<!-- /.logo -->
+
+					<div class="main-navigation pull-right">
+
+						<nav class="main-nav visible-md visible-lg">
+							<ul class="sf-menu">
+								<li class="active"><a href="/">Home</a></li>
+					            <li><a href="/user_busstation/info">Bus</a>
+					            	<ul>
+					            		<li><a href="/bus/list/1">Bus List</a></li>
+					            		<li><a href="/busroad/list/1">BusRoad List</a></li>
+					            		<li><a href="/user_busresv/lookup">BusResv</a></li>
+					            		<li><a href="/user_busresv/resvlist">Bus ResvList</a></li>
+					            	</ul>
+					            </li>
+					            <li><a href="/hotel_resv/hotel_resv">Hotel</a>
+									<ul>
+										<li><a href="/hotel/list/1">Hotel List</a></li>
+                                        <li><a href="/hotel_board/hotel_list/1">Hotel Board</a></li>
+                                        <li><a href="/hotel_resv/paylist">Hotel PayList</a></li>
+									</ul>
+					            </li>
+					            <li><a href="/hotel_board/hotel_list/1">Community</a></li>
+					            <th:block th:if="${session.user == null}">
+									<li><a href="/member/join" style="background-color: #ECF0DF; border-radius: 20px; text-decoration: none; ">Join</a></li>
+									<li><a href="/member/login" style="background-color: #ECF0DF; border-radius: 20px; text-decoration: none; ">Login</a></li>
+					            </th:block>
+					            <th:block th:if="${session.user != null}">
+									<th:block th:if="${session.user.role == 'user'}">
+						            <li><a href="/member/mypage">MyPage</a>
+						            </li>
+						            <li><a href="/member/login" style="background-color: #ECF0DF; border-radius: 20px;">Logout</a></li>
+						            </th:block>
+						            <th:block th:if="${session.user.role == 'admin' || session.user.role == 'hadmin' || session.user.role == 'alladmin'}">
+						            <li><a href="/member/mypage">Admin Page</a>
+						            	<th:block th:if="${session.user.role == 'alladmin'}">
+						            	<ul>
+											<li><a href="/hotelcheck">Admin Management</a></li>
+											<li><a href="/hotelAD/hotel/list">Hotel Admin List</a></li>
+											<li><a th:href="@{'/superAD/HADhotel_list/' + ${session.user.id}}">HotelAdmin Management</a></li>
+	                                        <li><a href="/superAD/member/list">User List</a></li>
+	                                        <li><a href="/superAD/member/listsearch">User Search</a></li>
+										</ul>
+										</th:block>
+										<th:block th:if="${session.user.role == 'admin'}">
+										<ul>
+											<li><a href="/bus/list/1">Bus List</a></li>
+						            		<li><a href="/busstation/list/1">BusStation List</a></li>
+						            		<li><a href="/busroad/list/1">BusRoad List</a></li>
+						            		<li><a href="/busresv/list/1">BusResv List</a></li>
+						            		<li><a href="/user_busresv/resvlist">Bus ResvList</a></li>
+						            		<li><a href="/superAD/member/list">User List</a></li>
+	                                        <li><a href="/superAD/member/listsearch">User Search</a></li>
+										</ul>
+										</th:block>
+										<th:block th:if="${session.user.role == 'hadmin'}">
+										<ul>
+											<li><a href="/hotelAD/hotel/list">Admin Hotel List</a></li>
+											<li><a href="/hotel_board/hotel_list2/1">Admin Hotel Board</a></li>
+						            		<li><a href="/hotelAD/hotel_resv/paylistall">AllHotel Pay List</a></li>
+						            		<li><a href="/hotelAD/hotel_resv/list/3">Hotel Resv Calendar</a></li>
+						            		<li><a href="/superAD/member/list">User List</a></li>
+	                                        <li><a href="/superAD/member/listsearch">User Search</a></li>
+										</ul>
+										</th:block>
+									</li>
+						            <th:block>
+						            <li><a href="/member/login" style="background-color: #ECF0DF; border-radius: 20px;" id="logoutButton">Logout</a></li>
+					            </th:block>
+							</ul> <!-- /.sf-menu -->
+							<th:block th:if="${session.user != null}">
+								 <span style="float: right;"><span th:text="${session.user.name}"></span>님<span th:text="'('+${session.user.role}+')'"></span></span>
+							</th:block>
+						</nav> <!-- /.main-nav -->
+
+						<!-- This one in here is responsive menu for tablet and mobiles -->
+					    <div class="responsive-navigation visible-sm visible-xs">
+					        <a href="#nogo" class="menu-toggle-btn">
+					            <i class="fa fa-bars"></i>
+					        </a>
+					    </div> <!-- /responsive_navigation -->
+					</div> <!-- /.main-navigation -->
+				</div> <!-- /.col-md-12 -->
+			</div> <!-- /.row -->
+		</div> <!-- /.container -->
+	</header> <!-- /.site-header -->
 </body>
 
 </html>

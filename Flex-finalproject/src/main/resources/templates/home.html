@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Home</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<h1>관리자 페이지</h1>
+	<th:block th:if="${session.user.role == 'alladmin'}">
+		<a href="/superAD/main">슈퍼관리자</a><br>
+	</th:block>	
+	<th:block th:if="${session.user.role == 'admin'}">
+		<a href="/bus/main">버스관리자</a><br>
+	</th:block>	
+	<th:block th:if="${session.user.role == 'hadmin'}">
+		<a href="/hotelAD/main">호텔관리자</a><br>
+	</th:block>	
+	<a href="/logout">로그아웃</a><br>
+	<a href="/member/login">로그인</a><br>
+	<div th:include="footer.html"></div>
+</body>
+</html>

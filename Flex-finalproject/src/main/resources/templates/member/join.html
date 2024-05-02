@@ -14,8 +14,6 @@
 	<link rel="stylesheet" href="/css/main/bootstrap.min.css">
 	<link rel="stylesheet" href="/css/main/style.css">
 	<link rel="stylesheet" href="/css/main/responsive.css">
-	<link rel="stylesheet" href="/css/main/custom.css">
-	<link rel="stylesheet" href="/css/main/sidebar.css">
 	<link rel="stylesheet" href="/css/styles.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
@@ -27,17 +25,12 @@
 </head>
 
 <body>
-	<div th:include="/header.html"></div>
 	<div class="container justify-content-center">
 		<div class="form-container justify-content-center container">
-			<div class="line2"></div>
-			<div class="mb-3 justify-content-center row">
-				<img src="https://i.postimg.cc/gc760pLT/kakao.png" alt="kakao"
-					class="sns-logo img-responsive center-block col-sm-3">
-				<img src="https://i.postimg.cc/NfpG07nf/naver.png" alt="naver"
-					class="sns-logo img-responsive center-block col-sm-3">
+			<div align="center">
+				회원가입
 			</div>
-
+			<br />
 			<div class="div-input">
 				<!--로그인 form-->
 				<form method="post" action="/member/join" id="form" novalidate>
@@ -47,7 +40,7 @@
 						<label for="inputId" class="form-label text-start">아이디</label>
 						<div class="input-group col">
 							<input type="text" class="form-control input" id="inputId" name="id" required>
-							<button class="btn id-check-btn custom-btn" type="button" onclick="checkId()">중복확인</button>
+							<button class="id-check-btn" type="button" onclick="checkId()">중복확인</button>
 							<div class="invalid-tooltip">아이디를 입력해주세요.</div>
 						</div>
 					</div>
@@ -129,7 +122,7 @@
 								<option value="kakao.com">kakao.com</option>
 								<option value="gmail.com">gmail.com</option>
 							</select>
-							<button class="btn id-check-btn custom-btn" type="button"
+							<button class="id-check-btn" type="button"
 								onclick="checkEmail()">인증하기</button>
 						</div>
 					</div>
@@ -139,7 +132,7 @@
 						<label for="inputEmailCheck" class="form-label text-start">인증번호</label>
 						<div class="input-group col">
 							<input type="password" class="form-control input" id="inputEmailCheck" disabled>
-							<button class="btn id-check-btn custom-btn" type="button"
+							<button class="id-check-btn" type="button"
 								onclick="checkEmailCheck()">확인</button>
 						</div>
 					</div>
@@ -158,15 +151,25 @@
 
 					<!--회원가입 버튼-->
 					<div class="mb-3 justify-content-center">
-						<button class="btn submit-btn custom-btn" type="button" id="btn-login"
-							onclick="submitForm()">회원가입</button>
+						<br />
+						<button class="id-check-btn" type="button" id="btn-login"
+							onclick="submitForm()">가입</button>
 					</div>
 				</form>
 			</div>
 		</div>
 
 	</div>
-	<div th:include="/footer.html"></div>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
 
 	<!-- Bootstrap JS (Popper.js and jQuery first, then Bootstrap) -->
 	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>

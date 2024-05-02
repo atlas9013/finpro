@@ -2,22 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
+<style>
+.container{
+	margin-top: 10px;
+	margin-bottom: 50px;
+}
+.center {
+  text-align: center;
+}
+.pagination {
+  display: inline-block;
+}
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
 </head>
 <body>
 	<div th:include="header.html"></div>
-	<h2>버스 목록</h2>
-	<hr>
-	<a href="/busstation/insert">터미널 등록</a>
+	<div class="container justify-content-center">
+	<th:block th:if="${session.user.role == 'admin' || session.user.role == 'alladmin'}">
+	<button style="background-color: #ECF0DF; border-radius: 30px;">
+		<a th:href="@{'/busstation/insert'}" th:text="터미널등록"></a>
+	</button>
+	</th:block>
 	<br>
-	<table width="100%" border="1">
+	<table class="table">
+		<thead class="table-primary">
 		<tr align="center">
 			<th>터미널번호</th>
 			<th>터미널이름</td>
 			<th>터미널주소</th>
 			<th>파일</th>
+			<th:block th:if="${session.user.role == 'admin' || session.user.role == 'alladmin'}">
 			<th>수정/삭제</th>
+			</th:block>
 		</tr>
+		</thead>
 		<tr th:if="${#lists.isEmpty(list)}">
         	<td colspan="3">등록된 터미널이 없습니다.</td>
     	</tr>
@@ -28,11 +63,37 @@
 			<td>
 				<img th:src="@{'/images/terminal/'+${b.filename}}" width="100" height="100">
 			</td>
-			<td><a th:href="@{'/busstation/delete/'+${b.stationno}}" th:text="삭제"></a>
-				<a th:href="@{'/busstation/update/'+${b.stationno}}" th:text="수정"></a></td>
+			<th:block th:if="${session.user.role == 'admin' || session.user.role == 'alladmin'}">
+			<td><a th:href="@{'/busstation/update/'+${b.stationno}}" th:text="수정"></a>
+				<a th:href="@{'/busstation/delete/'+${b.stationno}}" th:text="삭제"></a></td>
+			</th:block>
 		</tr>
 	</table>
+	<div class="center">
+   		<div class="pagination">
+			<th:block th:if="${startPage > pageGROUP}">
+		    	<a th:href="@{'/busstation/list/' + ${startPage - 1}}">&laquo;이전</a>		
+			</th:block>
+			<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+		    	<a th:href="@{'/busstation/list/'+ ${i}}" th:text="${i}"></a>
+			</th:block>
+		
+			<th:block th:if="${endPage < pageCount}">
+			    <a th:href="@{'/busstation/list/' + ${endPage + 1}}">다음&laquo;</a>	
+			</th:block>
+   		</div>
+	</div>
 	<hr>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
 	<div th:include="footer.html"></div>
 </body>
 </html>

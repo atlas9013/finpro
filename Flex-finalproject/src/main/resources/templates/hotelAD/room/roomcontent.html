@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>룸 소개</title>
+<style>
+	ul {
+    padding: 0;
+    margin: 0;
+	}
+
+	li {
+	    list-style: none;
+	}
+</style>
+<script>
+var index = 0;
+window.onload = function(){
+	slideShow();
+}
+
+function slideShow(){
+	var i;
+	var x = document.getElementsByClassName("slide");
+	
+	// 모든 이미지를 숨김
+	for(i=0;i<x.length;i++){
+		x[i].style.display = "none";
+	}
+	index++;
+	if(index > x.length){
+		index=1;
+	}
+	x[index-1].style.display = "block";
+	setTimeout(slideShow,2000);
+}
+</script>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<div align="center">
+	<b>룸 보기</b>
+	<br><br>
+	<br />
+	<table border="1">
+		<tr height="30">
+			<th width="20%">호텔번호</th>
+			<td align="center" width="30%" th:text="${r.hotelno}"></td>
+			<input type="hidden" name="hotelno" th:value="${r.hotelno}" >
+			<th width="20%">룸 번호</th>
+			<td align="center" width="30%" th:text="${r.roomno}">성</td>
+		</tr>
+		<tr height="30">
+			<th width="20%">룸 이름</th>
+			<td align="center" width="30%" th:text="${r.name}"></td>
+			<th width="20%">룸 가격</th>
+			<td align="center" width="30%" th:text="${r.price}"></td>
+		</tr>
+		<tr height="30">
+			<th width="20%">객실 크기</th>
+			<td align="center" width="30%" th:text="${r.roomsize}"></td>
+			<th width="20%">정원</th>
+			<td align="center" width="30%" th:text="${r.sleeps}">명</td>
+		</tr>
+		<tr height="30">
+			<th width="20%">룸 설명</th>
+			<td align="center" colspan="3" th:text="${r.item}"></td>
+		</tr>
+		<tr>
+			<div id="wrapper">
+				<div id="slider-wrap">
+					<ul id="slider">
+						<li>
+							<div th:each="item : ${filearr}">
+								<img width="300px" height="250px" class="slide" th:src="'/images/room/'+${item}">
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+	    </tr>
+		<tr>
+			<td colspan="4" align="left">
+				<a th:href="@{'/hotelAD/room/update/'+${r.roomno}}">수정</a> | 
+				<a th:href="@{'/hotelAD/room/delete/'+${r.roomno}}">삭제</a>
+			</td>
+			<td colspan="4" align="right">
+				<a th:href="@{'/hotelAD/room/list/'+${r.hotelno}}">
+					<input type="button" value="글목록">
+				</a>
+			</td>
+		</tr>
+
+	</table>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

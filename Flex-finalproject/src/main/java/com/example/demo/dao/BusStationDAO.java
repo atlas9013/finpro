@@ -33,7 +33,6 @@ public interface BusStationDAO extends JpaRepository<BusStation, Integer> {
 	public BusStation getBusStation_no(int stationno);
 	
 	//검색어찾기->키워드로받아서 개수몇개인지받아오기
-	//★if문 어떻게 처리하는지 몰라
 	@Query(value="select * from busstation where stationname like CONCAT(CONCAT('%', ?1), '%')", nativeQuery=true)
 	public List<BusStation> find_station(String keyword);
 

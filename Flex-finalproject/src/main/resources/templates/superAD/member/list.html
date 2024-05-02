@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>회원 목록</title>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<div align="center">
+    <hr color="green" width="300">
+    <h2>회 원 목 록 보 기</h2>
+    <hr color="green" width="300">
+    <table width="100%" class="table">
+        <thead class="table-primary">
+        <tr>
+            <th class="m3">아이디</th>
+            <th class="m3">이름</th>
+            <th class="m3">이메일</th>
+            <th class="m3">전화번호</th>
+            <th class="m3">가입일</th>
+            <th class="m3">수정 | 삭제</th>
+        </tr>
+        </thead>
+        <th:block th:if="${#lists.isEmpty(memberList)}">
+            <tr>
+                <td colspan="7" align="center">등록된(찾으시는) 회원이 없습니다.</td>
+            </tr>
+        </th:block>
+        <th:block th:unless="${#lists.isEmpty(memberList)}">
+            <tr th:each="member : ${memberList}" align="center">
+                <td th:text="${member.id}"></td>
+                <td th:text="${member.name}"></td>
+                <td th:text="${member.email}"></td>
+                <td th:text="${member.phone}"></td>
+                <td th:text="${member.joindate}"></td>
+                <td>
+                    <a th:href="@{'/superAD/member/update/' + ${member.id}}">수정</a> |
+                    <a th:href="@{'/superAD/member/delete/' + ${member.id}}">삭제</a>
+                </td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

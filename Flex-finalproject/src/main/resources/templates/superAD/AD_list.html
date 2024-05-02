@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
+	<hr color="green" width="300">
+	<h2>관리자</h2>
+	<hr color="green" width="300">
+	<br>
+	<table width="100%" class="outline">
+		<tr>
+			<th class="m3">아이디</th>
+			<th class="m3">이름</th>
+			<th class="m3">이메일</th>
+			<th class="m3">전화번호</th>
+			<th class="m3">가입일</th>
+			<th class="m3">회원등급</th>
+			<th:block th:if="${session.user.role == 'alladmin'}">
+			<th class="m3">관리</th>
+			<th class="m3">수정 | 삭제</th>
+			</th:block>
+		</tr>
+		<tr th:if="${#lists.isEmpty(list)}">
+        	<td colspan="6">
+				등록된(찾으시는) 회원이 없습니다.
+			</td>
+    	</tr>
+		<tr th:each="m: ${list}">
+		    <td th:text="${m.id}"></td>
+		    <td th:text="${m.name}"></td>
+		    <td th:text="${m.email}"></td>
+		    <td th:text="${m.phone}"></td>
+		    <td th:text="${m.joindate}"></td>
+		    <td th:text="${m.role}"></td>
+		    <th:block th:if="${session.user.role == 'alladmin'}">
+			<td>
+				<th:block th:if="${m.role == 'hadmin'}">	
+					<a th:href="@{'/superAD/HADhotel_list/'+${m.id}}" th:text="호텔관리"></a>
+				</th:block>
+				<th:block th:if="${m.role == 'admin'}">	
+					<a th:href="@{'/superAD/BADbus_list/'+${m.id}}" th:text="버스관리"></a>
+				</th:block>
+			</td>
+		    <td>
+				<a th:href="@{'/superAD/member/update/' + ${m.id}}">수정</a> |
+                <a th:href="@{'/superAD/member/delete/' + ${m.id}}">삭제</a>
+			</td>
+			</th:block>
+		</tr>
+	</table>
+	<hr>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

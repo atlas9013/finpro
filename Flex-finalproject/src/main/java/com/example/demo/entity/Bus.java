@@ -17,4 +17,5 @@ public class Bus {
 	private int busno;
 	private String grade; 
 	private int seat;
+	private String id;
 }

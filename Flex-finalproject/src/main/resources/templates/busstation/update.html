@@ -2,10 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
+<style>
+	input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+</style>
 </head>
 <body>
 	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
 	<h2>터미널 수정</h2>
 	<hr>
 	<div align="center">
@@ -13,7 +21,7 @@
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 			<input type="hidden" name="stationno" th:value="${busstation.stationno }">
 			<input type="hidden" name = "filename" th:value="${busstation.filename }">
-			<table width="50%" border="1">
+			<table width="60%" class="outline">
 				<tr>
 					<td>터미널번호 : <span th:text="${busstation.stationno}" id="stationno" th:value="${busstation.stationno}"></span></td>	
 				</tr>
@@ -28,7 +36,7 @@
 						<span th:text="${busstation.filename} "></span></td>
 					<div th:if="${busstation.filename} != null">
 						<!--이미지파일일때-->
-						<div th:if="${#strings.endsWith(busstation.filename, '.jpg')} or ${#strings.endsWith(busstation.filename, '.png')} or ${#strings.endsWith(busstation.filename, '.gif')}">
+						<div th:if="${#strings.endsWith(busstation.filename, '.jpg')} or ${#strings.endsWith(busstation.filename, '.png')} or ${#strings.endsWith(busstation.filename, '.gif')} or ${#strings.endsWith(busstation.filename, '.jpeg')}">
 							<img th:src="@{'/images/terminal/'+${busstation.filename}}" width="100" height="100">
 						</div>
 						<!--이미지파일이 아닐때(바깥이 ""이라서 ''로 묶어-->
@@ -44,6 +52,17 @@
 				</tr>
 			</table>
 		</form>
+	</div>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
 	</div>
 	<div th:include="footer.html"></div>
 </body>

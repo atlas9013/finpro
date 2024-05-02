@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>호텔정보입력</title>
+<style>
+	input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+</style>
+<script>
+	function check(){
+		if (f.name.value == "") {
+            alert("호텔 이름를 입력하지 않았습니다.")
+            f.name.focus();
+            return;
+        }
+		if (f.address.value == "") {
+            alert("호텔 주소를 입력하지 않았습니다.")
+            f.address.focus();
+            return;
+        }
+		if (f.phone.value == "") {
+            alert("전화번호를 입력하지 않았습니다.")
+            f.phone.focus();
+            return;
+        }
+		if (f.info.value == "") {
+            alert("호텔 설명를 입력하지 않았습니다.")
+            f.info.focus();
+            return;
+        }
+		document.f.submit()
+	}
+</script>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<br />
+<form name="f" action="/hotelAD/hotel/insert" method="post" enctype="multipart/form-data">
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+	<table width="600" align="center" class="table">
+		<tr>
+			<td>호텔 이름</td>
+			<td><input type="text" name="name"></td>
+		</tr>
+		<tr>
+			<td>주소</td>
+			<td><input type="text" name="address"></td>
+		</tr>
+		<tr>
+			<td width="150">호텔 연락처</td>
+			<!--phone input-->
+			<td>
+				<input type="text" name="phone" id="finalPhone" required>
+			</td>
+		</tr>
+		<tr>
+			<td>호텔 정보</td>
+			<td><textarea rows="6" cols="30" name="info"></textarea></td>
+		</tr>
+		<tr>
+			<td>호텔 성급</td>
+			<td>
+				<select th:name="star">
+				    <option th:value="1">1성급</option>
+				    <option th:value="2">2성급</option>
+				    <option th:value="3">3성급</option>
+				    <option th:value="4">4성급</option>
+				    <option th:value="5">5성급</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>호텔사진</td>
+			<td><input multiple="multiple" type="file" name="uploadFile"></td>
+		</tr>
+		<tr>
+			<td colspan="2" align="right">
+				<input type="button" th:value="추가" onclick="javascript:check()">
+				<input type="reset" th:value="다시쓰기">
+			</td>
+		</tr>
+	</table>
+</form>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

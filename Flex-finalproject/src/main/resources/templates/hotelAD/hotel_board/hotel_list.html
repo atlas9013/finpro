@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<style>
+.container{
+	margin-top: 10px;
+	margin-bottom: 50px;
+}
+.center {
+  text-align: center;
+}
+.pagination {
+  display: inline-block;
+}
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
+	<br>
+	<div align="center">
+	<table class="table">
+		<thead class="table-primary">
+		<tr>
+			<td width="7%">호텔번호</td>
+			<td>호텔이름</td>
+			<td width="20%">호텔주소</td>
+			<td width="10%">전화번호</td>
+			<td>아이디</td>
+			<td width="30%">호텔정보</td>
+			<td width="6%">호텔성급</td>
+			<td width="5%">파일</td>
+			<td width="5%">리뷰보기</td>
+		</tr>
+		</thead>
+		<tr th:if="${#lists.isEmpty(list)}">
+        	<td colspan="7">
+				등록된 호텔이 없습니다
+			</td>
+    	</tr>
+		<tr th:each="h: ${list}">
+		    <td th:text="${h.hotelno}"></td>
+		    <td th:text="${h.name}"></td>
+		    <td th:text="${h.address}"></td>
+		    <td th:text="${h.phone}"></td>
+		    <td th:text="${h.id}"></td>
+		    <td th:text="${h.info}"></td>
+		    <td th:text="${h.star}"></td>
+		    <td><img th:src="@{'/images/folder.gif'}" width="20" height="20" alt="image" border="0"></td>
+		    <td>
+				<a th:href="@{'/hotel_board/list/'+${h.hotelno}}+'/1'" th:text="이동"></a> 
+			</td>
+		</tr>
+	</table>
+	</div>
+	<hr>
+	<div class="center">
+   		<div class="pagination">
+			<th:block th:if="${startPage > pageGROUP}">
+		    	<a th:href="@{'/hotel_board/hotel_list/' + ${startPage - 1}}">&laquo;이전</a>		
+			</th:block>
+			<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+		    	<a th:href="@{'/hotel_board/hotel_list/'+ ${i}}" th:text="${i}"></a>
+			</th:block>
+		
+			<th:block th:if="${endPage < pageCount}">
+			    <a th:href="@{'/hotel_board/hotel_list/' + ${endPage + 1}}">다음&laquo;</a>	
+			</th:block>
+   		</div>
+	</div>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

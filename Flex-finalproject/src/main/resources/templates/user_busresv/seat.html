@@ -2,12 +2,98 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>좌석 선택</title>
-
+<style type="text/css">
+   div#left{
+   width:10%;
+   height:35px; 
+   float:left;
+   margin-left: 3%;
+   }
+   
+   div#right{ 
+   width:10%; 
+   height:35px;
+   float:right;
+   margin-right: 3%;
+   }
+   
+   div.red{
+      border:1px solid red;
+   }
+   div.blue{
+      border:1px solid blue;
+   }
+</style>
 </head>
 <body>
-	<div th:include="header.html"></div>
-seat
-<div th:include="footer.html"></div>
+	<div class="container justify-content-center">
+<form action="/user_busresv/pay">
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+	<div align="center">
+        <div style="border:1px solid gray; width:50%;">
+            <h3 style="width:100%;" align="center">[[${bs_a.stationname}]] ▶ [[${bs_b.stationname}]]  ([[${one_date}]] 출발)</h3>
+            <input type="hidden" name="one_date" th:value="${one_date}">
+            <input type="hidden" name="roadno" th:value="${seat_b.roadno}">
+            <input type="hidden" name="arrival" th:value="${b.arrival}">
+            <input type="hidden" name="departure" th:value="${b.departure}">
+            <input type="hidden" name="seat_no" th:value="${seat_no}">
+        </div><!-- 출발지 도착지 -->
+        
+        <div style="border:1px solid gray; width:50%; height:900px ">
+			<br />
+            <div style="border:2px solid black; width:20%; float:right; font-size: 20px; margin-right: 3%;" align="center">🪟문</div>
+			<div style="border:2px solid black; width:20%; float:left; font-size: 20px; margin-left: 3%;" align="center">🧑🏻‍✈️기사</div>
+
+            <br><br><br />
+			<div th:with="bool=true">
+			    <th:block th:each="i: ${#numbers.sequence(1, seat_b.seat)}">
+			        <th:block th:each="resv: ${resvlist}">
+			            <th:block th:if="${resv != ''}">
+			                <th:block th:if="${resv == i}">
+			                    <th:block th:with="bool=false"></th:block>
+			                </th:block>
+			            </th:block>
+			        </th:block>
+			    </th:block>
+			
+			    <div th:with="str='', str2=''">
+			        <div th:each="i: ${#numbers.sequence(1, seat_b.seat)}">
+			            <!-- i 값이 4로 나눈 나머지가 1 또는 2일 때, 좌석이 왼쪽에 배치 -->
+			            <div th:if="${(i % 4 == 1) || (i % 4 == 2)}" th:class="${bool ? 'blue' : 'red'}" id="left">
+			                <p>
+							    <input type="checkbox" name="seat" th:value="${i}" th:disabled="${!bool}"><span th:text="${i}"></span>
+							</p>
+			            </div>
+			            
+			            <div th:if="${i % 4 == 2}"></div>
+			            <!-- i 값이 4로 나눈 나머지가 3 또는 0일 때, 좌석이 오른쪽에 배치 -->
+			            <div th:if="${(i % 4 == 3) || (i % 4 == 0)}" th:class="${bool ? 'blue' : 'red'}" id="right">
+			                <p>
+							    <input type="checkbox" name="seat" th:value="${i}" th:disabled="${!bool}"><span th:text="${i}"></span>
+							</p>
+			            </div>
+			            <br th:if="${i % 4 == 0}"><br>
+			        </div>
+			        <br><br>
+			        <div style="float:right; margin-right: 3%;">
+			            <input type="submit" value="예매" style="width:200px; background-color: #CF768D; font-weight: bold;">
+			        </div>
+			    </div>
+			</div>
+	</div>
+</form>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
 </body>
 </html>

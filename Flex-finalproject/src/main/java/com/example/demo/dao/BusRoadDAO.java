@@ -26,7 +26,7 @@ public interface BusRoadDAO extends JpaRepository<BusRoad, Integer> {
 	@Transactional
 	public int deleteBusroad(int roadno);
 	
-	@Query(value =  "select * from (select rownum n,A.* from (select * from busroad order by busno)A) "
+	@Query(value =  "select * from (select rownum n,A.* from (select * from busroad order by roadno)A) "
 			+ "where n between ?1 and ?2 ",nativeQuery = true)
 	public List<BusRoad> busroad_list_count(int start, int end);
 

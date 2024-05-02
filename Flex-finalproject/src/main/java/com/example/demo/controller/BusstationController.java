@@ -18,8 +18,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.entity.Bus;
 import com.example.demo.entity.BusStation;
 import com.example.demo.entity.Goods;
+import com.example.demo.entity.Hotel;
+import com.example.demo.entity.Room;
 import com.example.demo.service.BusService;
 import com.example.demo.service.BusstationService;
+import com.example.demo.service.HotelService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
@@ -30,9 +33,13 @@ public class BusstationController {
 	public int pageSIZE = 5;
 	public int totalRecord = 0;
 	public int totalPage = 1;
-
+	public int pageGROUP = 5;
+	
 	@Autowired
 	private BusstationService bs;
+	
+	@Autowired
+	private HotelService hs;
 
 	@GetMapping("/busstation/list/{pageNUM}")
 	public String list(Model model, @PathVariable("pageNUM") int pageNUM) {
@@ -42,12 +49,24 @@ public class BusstationController {
 		totalPage =(int) Math.ceil((double)totalRecord/pageSIZE);
 		int start = (pageNUM-1)*pageSIZE+1;
 		int end = start+pageSIZE-1;
-
+		int startNum = totalRecord-((pageNUM-1)*pageSIZE);
+		int pageCount = totalRecord/pageSIZE + (totalRecord%pageSIZE == 0 ? 0 : 1);
+		pageGROUP = 5;
+		int startPage = (pageNUM-1)/pageGROUP * pageGROUP + 1;
+		int endPage = startPage + pageGROUP - 1;
+		if (endPage>pageCount) endPage = pageCount;
+		
 		System.out.println("start:"+start);
 		System.out.println("end:"+end);
 
 		model.addAttribute("list", bs.busstation_list_count(start, end)); 
 		model.addAttribute("totalPage", totalPage);
+		model.addAttribute("totalRecord", totalRecord);
+		model.addAttribute("pageCount", pageCount);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("startNum", startNum);
+		model.addAttribute("pageGROUP", pageGROUP);
 
 		return "/busstation/list";
 	}
@@ -60,7 +79,7 @@ public class BusstationController {
 	@PostMapping("/busstation/insert")
 	public String insertSubmit(BusStation b, HttpServletRequest request) {
 		//파일
-		String path = request.getServletContext().getRealPath("/images");
+		String path = request.getServletContext().getRealPath("/images/terminal");
 		System.out.println("path:"+path);
 		String filename = null;
 		MultipartFile uploadFile = b.getUploadFile();
@@ -101,7 +120,9 @@ public class BusstationController {
 
 	@GetMapping("/busstation/update/{stationno}")
 	public String busstation_update(@PathVariable int stationno, Model model) {
-		model.addAttribute("busstation", bs.getBusstation(stationno));
+		BusStation list = bs.getBusstation(stationno);
+		System.out.println(list.getFilename());
+		model.addAttribute("busstation", list);
 		return "/busstation/update";
 	}
 
@@ -144,19 +165,78 @@ public class BusstationController {
 			model.addAttribute("busstation_list",busstation_list);
 		}
 		
-		@GetMapping(value="/user_busstation/map/{stationno}")
-		public String bus_station_info_map(@PathVariable int stationno){
+		@GetMapping(value="/user_busstation/map")
+		public String bus_station_info_map(){
 			String view = "/user_busstation/map";
 			return view;
 		}
 		
 		@GetMapping(value="/user_busstation/detail/{stationno}") //버스정류소 디테일 페이지
 		public String bus_station_info_detail(@PathVariable("stationno") int stationno, Model model){
-			BusStation b =bs.getBusstation(stationno);
-			
-			String view = "/user_busstation/detail";
-			model.addAttribute("b", b);
-			
-			return view;
+		    BusStation b = bs.getBusstation(stationno);
+		    String view = "/user_busstation/detail";
+		    String address = "";
+		    double latitude = 0.0; 
+		    double longitude = 0.0; 
+
+		    if(stationno == 1){
+		    	address = "서울";
+		        latitude = 37.506782; // 위도 설정
+		        longitude = 127.004952; // 경도 설정
+		        System.out.println("Latitude: " + latitude + ", Longitude: " + longitude);
+		    
+		    } else if(stationno == 2){
+		    	address = "인천";
+		        latitude = 37.441533;
+		        longitude = 126.702531;
+		    
+		    } else if(stationno == 3) {
+		    	address = "경기";
+		        latitude = 37.642731;
+		        longitude = 126.790217;
+		    } else if(stationno == 4) {
+		    	address = "강원";
+		        latitude = 37.755;
+		        longitude = 128.8792;
+		    } else if(stationno == 5) {
+		    	address = "대전";
+		        latitude = 36.34252;
+		        longitude = 127.436887;
+		    } else if(stationno == 6) {
+		    	address = "대구";
+		        latitude = 35.877269;
+		        longitude = 128.628997;
+		    } else if(stationno == 7) {
+		    	address = "부산";
+		        latitude = 35.284956;
+		        longitude = 129.095012;
+		    } else if(stationno == 8) {
+		    	address = "울산";
+		        latitude = 35.537149;
+		        longitude = 129.339547;
+		    }
+
+		    List<Hotel> hotellist = hs.listHoteladdress(address);
+		    String[] filenames = new String[hotellist.size()];
+			String firstfilename="";
+		    //룸 리스트 메인 사진 한장 가져오기
+			int index = 0;
+			for(Hotel hotel : hotellist){
+				int hotelno = hotel.getHotelno();
+				String filename= hotel.getFilename();
+				String[] arrfilename = filename.split("/");
+				System.out.println(arrfilename[0]);
+				firstfilename = arrfilename[0];
+				filenames[index] = firstfilename;
+				index++;
+			}
+			model.addAttribute("filenames", filenames);
+		    model.addAttribute("hotellist", hotellist);
+		    model.addAttribute("latitude", latitude);
+		    model.addAttribute("longitude", longitude);
+		    model.addAttribute("b", b);
+
+		    return view;
 		}
+
 }

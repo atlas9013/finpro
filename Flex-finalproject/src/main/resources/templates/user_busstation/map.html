@@ -2,9 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6531bd7429cb60dfeb6a55f192032030"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey="></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
  $(function () {
@@ -114,6 +115,7 @@
 </head>
 <body>
 	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
 	<div class="container" align="center">
         <div id="map" style="width: 80%; height: 400px;"><br>
         </div>
@@ -129,6 +131,17 @@
             <button class="terminalButtons" id="btnGangnam" th:text="'강남 고속버스 터미널'"></button>
             <button class="terminalButtons" id="btnUlsan" th:text="'울산 고속버스 터미널'"></button>
    			<button class="terminalButtons" id="btnIncheon" th:text="'인천 고속버스 터미널'"></button>
+		</div>
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
 		</div>
 		<div th:include="footer.html"></div>
 </body>

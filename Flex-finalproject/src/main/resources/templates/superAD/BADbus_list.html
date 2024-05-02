@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
+	<br />
+	<span th:text="'버스관리자: '+${id}" style="font-weight: bold; font-size: 1.5em;"></span><br />
+	<hr color="green" width="200"><br />
+	<a href="/bus/insert">버스등록</a>
+	<br>
+	<table class="table">
+		<thead class="table-primary">
+		<tr>
+			<td>버스번호</td>
+			<td>버스등급</td>
+			<td>버스좌석수</td>
+			<td>수정/삭제</td>
+		</tr>
+		</thead>
+		<tr th:if="${#lists.isEmpty(list)}">
+        	<td colspan="7">
+				등록된 버스가 없습니다.
+			</td>
+    	</tr>
+		<tr th:each="b: ${list}">
+			<td th:text="${b.busno}"></td>
+			<td th:text="${b.grade}"></td>
+			<td th:text="${b.seat}"></td>
+			<td>
+				<a th:href="@{'/bus/delete/'+${b.busno}}" th:text="삭제"></a>
+				<a th:href="@{'/bus/update/'+${b.busno}}" th:text="수정"></a>
+			</td>
+		</tr>
+	</table>
+	<hr>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

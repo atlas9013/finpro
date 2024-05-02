@@ -2,15 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.container{
+	margin-top: 10px;
+	margin-bottom: 50px;
+}
+.center {
+  text-align: center;
+}
+.pagination {
+  display: inline-block;
+}
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
 <title>Insert title here</title>
 </head>
 <body>
 	<div th:include="header.html"></div>
-	<h2>버스예약 목록</h2>
-	<hr>
-	<a href="/busresv/insert">버스예약등록</a>
+	<div class="container justify-content-center">
+	<button style="background-color: #ECF0DF; border-radius: 30px;"><a th:href="@{'/busresv/insert'}" th:text="버스예약등록"></a></button>
 	<br>
-	<table border="1">
+	<table class="table">
+		<thead class="table-primary">
 		<tr>
 			<td>예약번호</td>
 			<td>아이디</td>
@@ -20,8 +48,11 @@
 			<td>사용한 포인트</td>
 			<td>적립 포인트</td>
 			<td>예약 날짜</td>
+			<th:block th:if="${session.user.role == 'admin' || session.user.role == 'alladmin'}">
 			<td>수정/삭제</td>
+			</th:block>
 		</tr> 
+		</thead>
 
 		<tr th:if="${#lists.isEmpty(list)}">
         	<td colspan="9">등록된 버스예약이 없습니다.</td>
@@ -35,17 +66,40 @@
 			<td th:text="${b.usepoint}"></td>
 			<td th:text="${b.savepoint}"></td>
 			<td th:text="${b.resvdate}"></td>
+			<th:block th:if="${session.user.role == 'admin' || session.user.role == 'alladmin'}">
 			<td>
-				<a th:href="@{'/busresv/delete/'+${b.resvno}}" th:text="삭제"></a>  |
 				<a th:href="@{'/busresv/update/'+${b.resvno}}" th:text="수정"></a>
+				<a th:href="@{'/busresv/delete/'+${b.resvno}}" th:text="삭제"></a>  |
 			</td>
+			</th:block>
 		</tr>
 	</table>
 	<hr>
-
-	<th:block th:each="i:${#numbers.sequence(1,totalPage)}">
-        <a th:href="@{'/busresv/list/'+${i}}" th:text="${i}"></a> 
-	</th:block>
+	<div class="center">
+   		<div class="pagination">
+			<th:block th:if="${startPage > pageGROUP}">
+		    	<a th:href="@{'/busresv/list/' + ${startPage - 1}}">&laquo;이전</a>		
+			</th:block>
+			<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+		    	<a th:href="@{'/busresv/list/'+ ${i}}" th:text="${i}"></a>
+			</th:block>
+		
+			<th:block th:if="${endPage < pageCount}">
+			    <a th:href="@{'/busresv/list/' + ${endPage + 1}}">다음&laquo;</a>	
+			</th:block>
+   		</div>
+	</div>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
 	<div th:include="footer.html"></div>
 </body>
 </html>

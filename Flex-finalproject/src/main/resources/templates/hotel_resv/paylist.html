@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/bootstrap2.min.css">
+</head>
+<body>
+	<!-- 환불 성공 시에만 alert 창이 나타납니다. -->
+    <div th:if="${refundSuccess}">
+        <script>
+            alert("환불 완료되었습니다.");
+        </script>
+    </div>
+<div th:include="header.html"></div>
+<div class="row justify-content-center text-center mb-5">
+	<div class="col-md-7">
+		<h2 class="heading" data-aos="fade-up">Hotel <span class="board">PayList</span></h2>
+  	</div>
+</div>
+<div class="container justify-content-center">
+<div align="center">
+	<table width="100%" class="table">
+		<thead class="table-primary">
+		<tr align="center">
+			<th>결제번호</th>
+			<th>아이디</th>
+			<th>호텔이름</th>
+			<th>방이름</th>
+			<th>체크인</th>
+			<th>체크아웃</th>
+			<th>사용 포인트</th>
+			<th>적립 포인트</th>
+			<th>가격</th>
+			<th>승인번호</th>
+			<th:block th:if="${session.user.role == 'hadmin' || session.user.role == 'alladmin'}">
+			<th>환불</th>
+			</th:block>
+		</tr>
+		</thead>
+		<th:block th:if="${#lists.isEmpty(pay_list)}">
+			<tr align="center">
+		    	<td colspan="10">결제한 목록이 없습니다</td>
+			</tr>
+		</th:block>
+		<tr th:each="r : ${pay_list}" align="center">
+			<input type="hidden" name="no" th:value="${r.no}" />
+			<input type="hidden" name="usepoint" th:value="${r.usepoint}" />
+	        <td th:text="${r.no}"></td>
+	        <td th:text="${r.id}"></td>
+	        <td th:text="${r.hotelno}"></td>
+	        <td th:text="${r.roomno}"></td>
+	        <td th:text="${r.startresvdate}"></td>
+	        <td th:text="${r.endresvdate}"></td>
+	        <td th:text="${r.usepoint}"></td>
+	        <td th:text="${r.savepoint}"></td>
+	        <td th:text="${r.price}"></td>
+	        <td th:text="${r.apply_num}"></td>
+	        <th:block th:if="${session.user.role == 'hadmin' || session.user.role == 'alladmin'}">
+	        <td>
+				<a th:href="@{'/hotel_resv/refund/' + ${r.no} + '?usepoint=' + ${r.usepoint}}" th:text="환불"/>
+			</td>
+			</th:block>
+		</tr>
+	</table>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

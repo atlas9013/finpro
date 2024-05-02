@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<style>
+.ss:link{
+	color:black;
+}
+.ss{ 
+text-decoration: none;
+}
+.ss:hover{
+	color:red;
+}
+.ss:visited{
+	color:black;
+}
+.container{
+margin-top: 10px;
+margin-bottom: 50px;
+}
+.center {
+  text-align: center;
+}
+.pagination {
+  display: inline-block;
+}
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<div align="center">
+	<h2 th:text="${h.name}">호텔게시판</h2>
+	<table bgcolor="white" width="80%" style="border-inline:1px solid #adadad">
+		<tr align="right">
+			<td colspan="6">
+				<button style="background-color: #ECF0DF; border-radius: 30px;"><a th:href="@{'/hotel_board/write/'+${h.hotelno}}" th:text="쓰기"></a></button>
+			</td>
+		</tr>
+		<tr bgcolor="#dbdbdb" align="center">
+			<!-- 게시글 번호 -->
+			<th >Nr.</th> 
+			
+			<!-- 작성자 -->
+			<th>User</th>
+			
+			<!-- 제목 -->
+			<th width="40%">Title</th> 
+			
+			<!-- 조회수 -->
+			<th>View</th>
+			
+			<!-- 작성일 -->
+			<th>Date</th>
+		</tr> 
+		<tr th:if="${#lists.isEmpty(listBoard)}">
+        	<td colspan="5">No Contents</td>
+    	</tr>
+    	<tr th:each="b: ${listBoard}" align="center">
+			<td th:text="${b.hotelboardno}" style="border-bottom:1px solid #ebebeb"></td>
+			<td th:text="${b.id}" style="border-right:1px solid #ebebeb;border-left:1px solid #ebebeb;border-bottom:1px solid #ebebeb"></td>
+			<td style="border-right:1px solid #ebebeb;border-left:1px solid #ebebeb;border-bottom:1px solid #ebebeb">
+			    <a class="ss" th:href="@{'/hotel_board/content/'+${h.hotelno}+'/'+${b.hotelboardno}+'/1'}">
+			        <span th:text="${b.title}"></span>&nbsp;&nbsp;[<span th:text="${b.restep}"></span>]
+			    </a>
+			</td>
+			<td th:text="${b.readcount}" style="border-right:1px solid #ebebeb;border-left:1px solid #ebebeb;border-bottom:1px solid #ebebeb"></td>
+			<td th:text="${b.regdate}" style="border-bottom:1px solid #ebebeb"></td>
+		</tr>
+	</table>
+	<br />
+	<div class="center">
+   		<div class="pagination">
+			<th:block th:if="${startPage > pageGROUP}">
+		    	<a th:href="@{'/hotel_board/hotel_list/' +${hotelno} +'/'+${startPage - 1}}">&laquo;이전</a>		
+			</th:block>
+			<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+		    	<a th:href="@{'/hotel_board/list/'+${hotelno} +'/'+ ${i}}" th:text="${i}"></a>
+			</th:block>
+		
+			<th:block th:if="${endPage < pageCount}">
+			    <a th:href="@{'/hotel_board/list/' +${hotelno} +'/'+ ${endPage + 1}}">다음&laquo;</a>	
+			</th:block>
+   		</div>
+	</div>
+</div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

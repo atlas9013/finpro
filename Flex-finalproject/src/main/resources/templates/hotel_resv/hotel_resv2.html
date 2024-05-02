@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<head>
+<meta charset="UTF-8">
+<title>호텔검색</title>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<div th:if="${user == null}" align="right">
+    <input type="button" value="로그인" onclick="location.href='/member/login'" />
+</div>
+<div th:unless="${user == null}" align="right">
+    <input type="button" value="로그아웃" onclick="location.href='/logout'" />
+</div>
+<br />
+<div align="center">
+	<form action="/hotel_resv/resvlist">
+		<table border="1">
+			<tr>
+				<th><label>지역</label></th>
+				<td>
+				    <select name="address">
+				        <option th:text="서울" th:value="서울"></option>
+				        <option th:text="경기" th:value="경기"></option>
+				        <option th:text="대전" th:value="대전"></option>
+				        <option th:text="대구" th:value="대구"></option>
+				        <option th:text="부산" th:value="부산"></option>
+				        <option th:text="울산" th:value="울산"></option>
+				        <option th:text="강원" th:value="강원"></option>
+				        <option th:text="인천" th:value="인천"></option>
+				    </select>
+				</td>
+				<th><label>체크 인</label></th>
+				<td> 
+					<input type="date" name="startresvdate" >
+				</td>
+				<th> 
+				<label>체크 아웃</label>
+				</th>
+				<td> 
+					<input type="date" name="endresvdate">
+				</td>
+				<th><label>객실</label></th>
+				<td> 
+					<select name="roomsu">
+						<option th:value="1" selected>1개</option>
+						<option th:value="2">2개</option>
+						<option th:value="3">3개</option>
+						<option th:value="4">4개</option>
+						<option th:value="5">5개</option>
+						<option th:value="6">6개</option>
+						<option th:value="7">7개</option>
+						<option th:value="8">8개</option>
+						<option th:value="9">9개</option>
+						<option th:value="10">10개</option>
+				</select></td>
+				<th><label>인원</label></th>
+				<td><select name="sleeps">
+						<option th:value="1">1명</option>
+						<option th:value="2" selected>2명</option>
+						<option th:value="3">3명</option>
+						<option th:value="4">4명</option>
+						<option th:value="5">5명</option>
+						<option th:value="6">6명</option>
+						<option th:value="7">7명</option>
+						<option th:value="8">8명</option>
+						<option th:value="9">9명</option>
+						<option th:value="10">10명</option>
+				</select></td>
+				<!-- <th><label>아동</label></th>
+				<td><select name="children">
+						<option th:value="0" selected>0명</option>
+						<option th:value="1">1명</option>
+						<option th:value="2">2명</option>
+						<option th:value="3">3명</option>
+						<option th:value="4">4명</option>
+						<option th:value="5">5명</option>
+						<option th:value="6">6명</option>
+						<option th:value="7">7명</option>
+						<option th:value="8">8명</option>
+						<option th:value="9">9명</option>
+				</select></td> -->
+				<!--<th><label>&nbsp;</label></th> -->
+				<td>
+					<button type="submit">검색</button></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

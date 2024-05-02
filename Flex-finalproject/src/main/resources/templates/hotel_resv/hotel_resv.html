@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+	input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+	}
+    .jumbotron {
+    	background-image: url('/images/in.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center; 
+        color: white; /* text color */
+        opacity: 0.7;
+    }
+	</style>
+    <title>호텔 예약 사이트</title>
+    <!-- load stylesheets -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">                <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">                                      <!-- Bootstrap style -->
+    <link rel="stylesheet" type="text/css" href="/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="/slick/slick-theme.css"/>
+    <link rel="stylesheet" href="/css/templatemo-style.css">    
+    </head>
+
+      <body>
+		<div th:include="header.html"></div>
+		
+        <div class="tm-page-wrap mx-auto">
+            <section class="tm-banner">
+                <div class="tm-container-outer tm-banner-bg">
+                    <div class="container">
+                        <div class="row tm-banner-row tm-banner-row-header">
+                            <div class="col-xs-12">
+                                <div class="tm-banner-header">
+                                    <div class="jumbotron">
+									    <h1 class="display-1" align="center">HOTEL</h1>
+									</div>
+                                    <a href="javascript:void(0)" class="tm-down-arrow-link"><i class="fa fa-2x fa-angle-down tm-down-arrow"></i></a>       
+                                </div>    
+                            </div>  <!-- col-xs-12 -->                      
+                        </div> <!-- row -->
+                        <div class="row tm-banner-row" id="tm-section-search" style="background-color: white; border-radius: 30px;" align="center">
+                            <form action="/hotel_resv/resvlist" class="tm-search-form tm-section-pad-2">
+                                <div class="form-row tm-search-form-row">                                
+                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
+                                        <label for="inputCity" style="font-size: 1.2em;">지역</label>
+                                        <select name="address" class="form-control tm-select" id="inputCity">
+									        <option th:text="서울" th:value="서울"></option>
+									        <option th:text="경기" th:value="경기"></option>
+									        <option th:text="대전" th:value="대전"></option>
+									        <option th:text="대구" th:value="대구"></option>
+									        <option th:text="부산" th:value="부산"></option>
+									        <option th:text="울산" th:value="울산"></option>
+									        <option th:text="강원" th:value="강원"></option>
+									        <option th:text="인천" th:value="인천"></option>
+									    </select>
+                                    </div>
+                                    <div class="form-group tm-form-group tm-form-group-1">                                    
+                                        <div class="form-group tm-form-group tm-form-group-pad tm-form-group-2">
+                                            <label for="inputRoom" style="font-size: 1.2em;">객실</label>
+                                            <select name="roomsu" class="form-control tm-select" id="inputRoom">
+                                                <option value="1">1 Rooms</option>
+                                                <option value="2">2 Rooms</option>
+                                                <option value="3">3 Rooms</option>
+                                                <option value="4">4 Rooms</option>
+                                                <option value="5">5 Rooms</option>
+                                                <option value="6">6 Rooms</option>
+                                                <option value="7">7 Rooms</option>
+                                                <option value="8">8 Rooms</option>
+                                                <option value="9">9 Rooms</option>
+                                                <option value="10">10 Rooms</option>
+                                            </select>                                        
+                                        </div>
+                                        <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">                                       
+                                            <label for="inputAdult"  style="font-size: 1.2em;">인원</label>     
+                                            <select name="sleeps" class="form-control tm-select" id="inputAdult">
+                                                <option value="2">2명</option>
+                                                <option value="3">3명</option>
+                                                <option value="4">4명</option>
+                                                <option value="5">5명</option>
+                                                <option value="6">6명</option>
+                                                <option value="7">7명</option>
+                                                <option value="8">8명</option>
+                                                <option value="9">9명</option>
+                                                <option value="10">10명</option>
+                                            </select>                                        
+                                        </div>
+                                    </div>
+                                </div> <!-- form-row -->
+                                <div class="form-row tm-search-form-row">
+
+                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
+                                        <label for="inputCheckIn">Check In Date</label>
+                                        <input name="startresvdate" type="date" id="inputCheckIn" required>
+                                    </div>
+                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-3">
+                                        <label for="inputCheckOut">Check Out Date</label>
+                                        <input name="endresvdate" type="date" id="inputCheckOut" required>
+                                    </div>
+                                    <div class="form-group tm-form-group tm-form-group-pad tm-form-group-1">
+                                        <label for="btnSubmit">&nbsp;</label>
+                                        <button type="submit" class="btn btn-primary tm-btn tm-btn-search text-uppercase" id="btnSubmit" style="font-size: 1.2em;">검색</button>
+                                    </div>
+                                </div>                              
+                            </form>                             
+
+                        </div> <!-- row -->
+                        <div class="tm-banner-overlay"></div>
+                    </div>  <!-- .container -->                   
+                </div>     <!-- .tm-container-outer -->                 
+            </section>
+			
+            <div class="tm-container-outer" id="tm-section-2">
+                <section class="tm-slideshow-section">
+                    <div class="tm-slideshow">
+                        <img src="/images/hotels/sinra.jpg" alt="Image">
+                        <img src="/images/hotels/sinra1.jpg" alt="Image">
+                        <img src="/images/hotels/sinra2.jpg" alt="Image">    
+                        <img src="/images/hotels/sinra3.jpg" alt="Image">    
+                    </div>
+                    <div class="tm-slideshow-description tm-bg-primary">
+                        <h2 class="">글로벌 럭셔리 호텔 THE SHILLA SEOUL</h2>
+                        <p>한국의 전통미와 현대적 감각을 겸비하고 있는 세계 속의 명문호텔.<br>LHW의 멤보로 세계 럭셔리 호텔들과 어깨를 나란히 하고 있는 서울신라호텔은 고객 한 분 한 분을 배려하는 기품있는 서비스로 세계 각궁의 수반들과 외교, 경제, 문화 등의 분야의 명사로부터 찬사를 받고 있으며, Conde Nast Traveler, Travel & Leisure, Zagat, Euromoney등 권위 있는 해외 매체로부터 매년 한국 최고의 호텔로 선정되고 있습니다.</p>
+                        <a href="/hotel/hotelcontent/5" class="text-uppercase tm-btn tm-btn-white tm-btn-white-primary">Continue Reading</a>
+                    </div>
+                </section>
+                <section class="clearfix tm-slideshow-section tm-slideshow-section-reverse">
+
+                    <div class="tm-right tm-slideshow tm-slideshow-highlight">
+                        <img src="/images/hotels/busan.jpg" alt="Image">
+                        <img src="/images/hotels/busan1.jpg" alt="Image">
+                        <img src="/images/hotels/busan2.jpg" alt="Image">
+                        <img src="/images/hotels/busan3.jpg" alt="Image">
+                    </div> 
+
+                    <div class="tm-slideshow-description tm-slideshow-description-left tm-bg-highlight">
+                        <h2 class="">천혜의 자연 경관을 갖춘 시그니엘 부산</h2>
+                        <p>부산의 아름다운 해변을 품은 기장에 위치한 시그니엘 부산은 ‘도심 속 완벽한 휴식처’라는 차별화된 컨셉과 규모, 서비스를 선보입니다. 탁 트인 오션뷰를 마음껏 감상 할 수 있는 약 18평의 넓고 여유로운 객실에는 프라이빗 발코니가 마련되어 휴식을 즐기기에 더 없이 좋은 시설을 자랑합니다. 특히 해안경관이 파노라믹 뷰로 펼쳐지는 야외 인피니티 풀, 성인 전용 인피니티풀, 키즈 풀, 자쿠지 등 해외 리조트 못지 않은 럭셔리 수영장과 피트니스와 사우나, 테라피 룸 등의 부대시설들이 함께 마련되어 있어 사계절 내내 완벽한 휴식을 선사합니다. 부산 최고의 비즈니스 및 레저 여행 장소인 힐튼 부산은 해안가에 자리 잡은 독특한 도심 리조트입니다.</p>
+                        <a href="/hotel/hotelcontent/83" class="text-uppercase tm-btn tm-btn-white tm-btn-white-highlight">Continue Reading</a>
+                    </div>                        
+
+                </section>
+                <section class="tm-slideshow-section">
+                    <div class="tm-slideshow">
+                        <img src="/images/in.jpg" alt="Image">
+                        <img src="/images/in1.jpg" alt="Image">
+                        <img src="/images/in2.jpg" alt="Image">
+                        <img src="/images/in3.jpg" alt="Image">
+                    </div>
+                    <div class="tm-slideshow-description tm-bg-primary">
+                        <h2 class="">PARADISE HOTEL & RESORT</h2>
+                        <p>고급스럽고 넓은 객실, 파인다이닝 레스토랑, 품격 있는 클럽 라운지를 보유한, 예술적 감성과 여유를 느낄 수 있는 컨템포러리 럭셔리 호텔입니다</p>
+						<a href="/hotel/hotelcontent/79" class="text-uppercase tm-btn tm-btn-white tm-btn-white-primary">Continue Reading</a>
+                    </div>
+                </section>
+            </div>        
+            <div class="tm-container-outer" id="tm-section-3">
+                <ul class="nav nav-pills tm-tabs-links">
+                    <li class="tm-tab-link-li">
+                        <a href="/user_busstation/detail/1" class="tm-tab-link">
+                            <img src="/images/north-america.png" alt="Image" class="img-fluid">
+                            Seoul
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="/user_busstation/detail/3" class="tm-tab-link">
+                            <img src="/images/south-america.png" alt="Image" class="img-fluid">
+                            Gyeonggi
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="/user_busstation/detail/5" class="tm-tab-link">
+                            <img src="/images/europe.png" alt="Image" class="img-fluid">
+                            Daejeon
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="/user_busstation/detail/6" class="tm-tab-link active"><!-- Current Active Tab -->
+                            <img src="/images/asia.png" alt="Image" class="img-fluid">
+                            Daegu
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="/user_busstation/detail/7" class="tm-tab-link">
+                            <img src="/images/africa.png" alt="Image" class="img-fluid">
+                            Busan
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="/user_busstation/detail/8" class="tm-tab-link">
+                            <img src="/images/australia.png" alt="Image" class="img-fluid">
+                            Ulsan
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="/user_busstation/detail/4" class="tm-tab-link">
+                            <img src="/images/antartica.png" alt="Image" class="img-fluid">
+                            Gangwon
+                        </a>
+                    </li>
+                    <li class="tm-tab-link-li">
+                        <a href="/user_busstation/detail/2" class="tm-tab-link">
+                            <img src="/images/antartica.png" alt="Image" class="img-fluid">
+                            Incheon
+                        </a>
+                    </li>
+                </ul>
+                </div>
+            </div>
+
+            <br />
+            <div th:include="footer.html"></div>
+        </div>
+    </div> <!-- .main-content -->
+
+    <!-- load JS files -->
+    <script src="/js/jquery-1.11.3.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
+    <script src="/js/popper.min.js"></script>                    <!-- https://popper.js.org/ -->       
+    <script src="/js/bootstrap.min.js"></script>                 <!-- https://getbootstrap.com/ -->
+    <script src="/js/datepicker.min.js"></script>                <!-- https://github.com/qodesmith/datepicker -->
+    <script src="/js/jquery.singlePageNav.min.js"></script>      <!-- Single Page Nav (https://github.com/ChrisWojcik/single-page-nav) -->
+    <script src="/slick/slick.min.js"></script>                  <!-- http://kenwheeler.github.io/slick/ -->
+    <script src="/js/jquery.scrollTo.min.js"></script>           <!-- https://github.com/flesler/jquery.scrollTo -->
+    <script> 
+        /* DOM is ready
+        ------------------------------------------------*/
+        $(function(){
+
+            // Change top navbar on scroll
+            $(window).on("scroll", function() {
+                if($(window).scrollTop() > 100) {
+                    $(".tm-top-bar").addClass("active");
+                } else {                    
+                 $(".tm-top-bar").removeClass("active");
+                }
+            });
+
+            // Smooth scroll to search form
+            $('.tm-down-arrow-link').click(function(){
+                $.scrollTo('#tm-section-search', 300, {easing:'linear'});
+            });
+
+            // Date Picker in Search form
+            //var pickerCheckIn = datepicker('#inputCheckIn');
+            //var pickerCheckOut = datepicker('#inputCheckOut');
+
+			// input 요소의 type을 "date"로 변경합니다.
+			document.getElementById('inputCheckIn').type = 'date';
+			document.getElementById('inputCheckOut').type = 'date';
+            // Update nav links on scroll
+            $('#tm-top-bar').singlePageNav({
+                currentClass:'active',
+                offset: 60
+            });
+
+            // Close navbar after clicked
+            $('.nav-link').click(function(){
+                $('#mainNav').removeClass('show');
+            });
+
+            // Slick Carousel
+            $('.tm-slideshow').slick({
+                infinite: true,
+                arrows: true,
+                slidesToShow: 1,
+                slidesToScroll: 1
+            });
+
+            loadGoogleMap();                                       // Google Map                
+            $('.tm-current-year').text(new Date().getFullYear());  // Update year in copyright           
+        });
+
+    </script>             
+
+</body>
+</html>

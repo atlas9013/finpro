@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -45,5 +46,5 @@ public interface Bus_BusRoadDAO extends JpaRepository<BusBusRoad, Integer> {
 	
 	//사용중이지 않은 bus_no 결과의 첫번째행
 	@Query(value =  "select A.busno from bus A left outer join busroad B on A.busno=B.busno where B.busno is null and rownum=1",nativeQuery = true)
-	public BusBusRoad bus_no_null_rownum();
+	public Map<String, Object> bus_no_null_rownum();
 }

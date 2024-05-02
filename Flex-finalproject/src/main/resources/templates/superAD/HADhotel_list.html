@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
+	<br />
+	<span th:text="'호텔관리자: '+${id}" style="font-weight: bold; font-size: 1.5em;"></span><br />
+	<hr color="green" width="300"><br />
+	<button style="background-color: #ECF0DF; border-radius: 30px;"><a th:href="@{'/hotelAD/hotel/insert'}" th:text="호텔등록"></a></button>
+	<br>
+	<table class="table">
+		<thead class="table-primary">
+		<tr>
+			<td width="4%">호텔번호</td>
+			<td width="20%">호텔이름</td>
+			<td width="20%">호텔주소</td>
+			<td>번호</td>
+			<td width="20%">호텔정보</td>
+			<td width="4%">성급</td>
+			<td width="5%">방정보</td>
+			<td>호텔예약</td>
+			<td>수정/삭제</td>
+		</tr>
+		</thead>
+		<tr th:if="${#lists.isEmpty(list)}">
+        	<td colspan="7">
+				등록된 호텔이 없습니다
+			</td>
+    	</tr>
+		<tr th:each="h: ${list}">
+		    <td th:text="${h.hotelno}"></td>
+		    <td th:text="${h.name}"></td>
+		    <td th:text="${h.address}"></td>
+		    <td th:text="${h.phone}"></td>
+		    <td>
+			    <span th:if="${h.info != null and #strings.length(h.info) > 30}" th:text="${#strings.substring(h.info, 0, 27) + '...'}"></span>
+			    <span th:if="${h.info != null and #strings.length(h.info) <= 30}" th:text="${h.info}"></span>
+			</td>
+		    <td th:text="${h.star}"></td>
+			<td>
+				<a th:href="@{'/hotelAD/room/list/'+${h.hotelno}}" th:text="방정보"></a>
+			</td>
+			<td>
+				<a th:href="@{'/hotelAD/hotel_resv/list/'+${h.hotelno}}" th:text="호텔예약"></a>
+			</td>
+		    <td>
+				<a th:href="@{'/hotelAD/hotel/update/'+${h.hotelno}}" th:text="수정"></a> | 
+				<a th:href="@{'/hotelAD/hotel/delete/'+${h.hotelno}}" th:text="삭제"></a>
+			</td>
+		</tr>
+	</table>
+	<hr>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

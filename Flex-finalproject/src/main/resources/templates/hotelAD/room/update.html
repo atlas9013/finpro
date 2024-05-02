@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>룸 정보입력</title>
+<style>
+		input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+</style>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<form name="f" action="/hotelAD/room/update" method="post" enctype="multipart/form-data">
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+	<input type="hidden" th:name="roomno" th:value="${r.roomno}">
+	<input type="hidden" th:name="hotelno" th:value="${r.hotelno}">
+	<table width="600" align="center" class="table" >
+		<tr>
+			<td>룸</td>
+			<td><input type="text" name="name" th:value="${r.name }"></td>
+		</tr>
+		<tr>
+			<td width="10%">룸 평수</td>
+			<td><input type="text" name="roomsize" th:value="${r.roomsize}"></td>
+		</tr>
+		<tr>
+			<td>정원</td>
+			<td><input type="text" name="sleeps" th:value="${r.sleeps }"></td>
+		</tr>
+		<tr>
+			<td>가격</td>
+			<td><input type="text" name="price" th:value="${r.price }"></td>
+		</tr>
+		<tr>
+			<td>룸 정보</td>
+			<td><textarea rows="6" cols="30" name="item" th:value="${r.item }" th:text="${r.item}"></textarea></td>
+		</tr>
+		<tr>
+			<td>룸 사진</td>
+			<td>
+				<input multiple="multiple" type = "file" name = "uploadFile"><br />
+				<span th:utext="${#strings.replace(r.filename, '/', '<br>')}"></span>
+				<input type="hidden" name = "filename" th:value="${r.filename}">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="right">
+				<input type="submit" value="전송">
+				<input type="reset" value="취소">
+			</td>
+		</tr>
+	</table>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
+	<div th:include="footer.html"></div>
+</form>
+</body>
+</html>

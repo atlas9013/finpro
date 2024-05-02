@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
+	<a href="/bus/list/1">버스리스트</a><br>
+	<a href="/busstation/list/1">버스터미널 리스트</a><br>
+	<a href="/busroad/list/1">버스노선 리스트</a><br>
+	<a href="/busroad/insert">버스노선 등록</a><br>
+	<a href="/busresv/list/1">버스예약 리스트</a><br>
+	<a href="/member/login">로그인</a><br>
+	<a href="/member/join">회원가입</a><br>
+	<a href="/superAD/member/list">회원조회</a><br>
+	<a href="/logout">로그아웃</a><br>
+	<a href="/home2">home화면-> 검색화면</a><br>
+	
+	-------------------------------
+	사용자화면<br />
+	<a href="/user_busstation/info">버스터미널 정보</a><br>
+	<a href="/user_busresv/lookup">lookup</a><br>
+	<a href="/user_busresv/resvlist">예약리스트</a><br>
+	
+	------------------------------- <br />
+	<a href="/hotelcheck">관리자계정체크</a><br>
+	<a href="/hotel/list/1">호텔리스트</a><br>
+	<a href="/hotel_resv/hotel_resv">호텔검색</a><br>
+	<a href="/hotel_board/hotel_list/1">호텔게시판 호텔리스트</a><br>
+	<a href="/hotel_resv/paylist">호텔결제리스트</a><br>
+	
+	
+	--------------------------------
+	관리자페이지 <br />
+	<a href="/superAD/main">슈퍼관리자페이지</a><br>
+	<a href="/hotelAD/main">호텔관리자페이지</a><br>
+	<a href="/bus/main">버스관리자페이지</a><br>
+	<a href="/hotelAD/hotel/list">호텔관리자</a><br>
+	<a href="/hotelAD/hotel_resv/list/1">관리자가 보는 호텔예약</a><br>
+	<a href="/hotelAD/hotel_resv/content/1">호텔예약</a><br>
+	<a href="/superAD/BAD_list">버스관리자리스트</a><br>
+	<a href="/superAD/HAD_list">호텔관리자리스트</a><br>
+	<a href="/superAD/HADhotel_list/hong2">호텔관리자의 호텔관리</a><br>
+	</div>
+</body>
+</html>

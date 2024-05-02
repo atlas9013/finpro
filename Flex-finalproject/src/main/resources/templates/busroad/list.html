@@ -2,15 +2,51 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
+<style>
+.container{
+	margin-top: 10px;
+	margin-bottom: 50px;
+}
+.center {
+  text-align: center;
+}
+.pagination {
+  display: inline-block;
+}
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+<link rel="stylesheet" href="/css/bootstrap2.min.css">
 </head>
 <body>
 	<div th:include="header.html"></div>
-	<h2>버스노선 목록</h2>
-	<hr>
-	<a href="/busroad/insert">버스노선 등록</a>
+	<div class="row justify-content-center text-center mb-5">
+	<div class="col-md-7">
+    	<h2 class="heading" data-aos="fade-up">BusRoad</h2>
+  	</div>
+	</div>
+	<div class="container justify-content-center">
+	<th:block th:if="${session.user.role == 'admin' || session.user.role == 'alladmin'}">
+	<button style="background-color: #ECF0DF; border-radius: 30px;"><a th:href="@{'/busroad/insert'}" th:text="버스노선등록"></a></button>
+	</th:block>
 	<br>
-	<table border="1">
+	<table class="table">
+		<thead class="table-primary">
 		<tr>
 			<th>노선번호</th>
 			<th>버스번호</th>
@@ -20,8 +56,11 @@
 			<th>가격</th>
 			<th>출발시간</th>
 			<th>도착시간</th>
-			<th>수정/삭제</th>
+			<th:block th:if="${session.user.role == 'admin' || session.user.role == 'alladmin'}">
+				<th>수정/삭제</th>
+			</th:block>
 		</tr>
+		</thead>
 		<tr th:if="${#lists.isEmpty(list)}">
         	<td colspan="3">등록된 버스가 없습니다.</td>
     	</tr>
@@ -29,8 +68,8 @@
 		    <td th:text="${b.roadno}"></td>
 		    <td th:text="${b.busno}"></td>
 		    <td th:text="${b.id}"></td>
-		    <td th:text="${b.arrival}"></td>
-		    <td th:text="${b.departure}"></td>
+		    <td th:text="${bs_a.stationname}"></td>
+		    <td th:text="${bs_b.stationname}"></td>
 		    <td th:text="${b.price}"></td>
 		    <td th:text="${b.arrtime}"></td>
 		    <td th:if="${b.tottime + b.arrtime > 24}" th:text="${b.arrtime + b.tottime - 24}"></td>
@@ -50,9 +89,31 @@
 		</tr>
 	</table>
 	<hr>
-	<th:block th:each="i:${#numbers.sequence(1,totalPage)}">
-        <a th:href="@{'/busroad/list/'+${i}}" th:text="${i}"></a> 
-	</th:block>
+	<div class="center">
+   		<div class="pagination">
+			<th:block th:if="${startPage > pageGROUP}">
+		    	<a th:href="@{'/busroad/list/' + ${startPage - 1}}">&laquo;이전</a>		
+			</th:block>
+			<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+		    	<a th:href="@{'/busroad/list/'+ ${i}}" th:text="${i}"></a>
+			</th:block>
+		
+			<th:block th:if="${endPage < pageCount}">
+			    <a th:href="@{'/busroad/list/' + ${endPage + 1}}">다음&laquo;</a>	
+			</th:block>
+   		</div>
+	</div>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
 	<div th:include="footer.html"></div>
 </body>
 </html>

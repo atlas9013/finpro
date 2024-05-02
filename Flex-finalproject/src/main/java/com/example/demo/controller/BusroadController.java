@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -33,7 +34,7 @@ public class BusroadController {
 	public int pageSIZE = 5;
 	public int totalRecord = 0;
 	public int totalPage = 1;
-
+	public int pageGROUP = 5;
 	@Autowired
 	private BusService busservice;
 	
@@ -51,22 +52,54 @@ public class BusroadController {
 	//버스노선
 	@GetMapping("/busroad/list/{pageNUM}")
 	public String list(Model model, @PathVariable("pageNUM") int pageNUM,HttpSession session) {
+		String msg = "";
+		String url = "";
+		if((Member)session.getAttribute("user")==null){//로그인 유효성검사
+			msg = "해당서비스는 로그인이 필요합니다.로그인페이지로 이동";
+			url = "/member/login";
+			model.addAttribute("msg",msg);
+			model.addAttribute("url",url);
+			return "message";
+		}else{
 		System.out.println("pageNUM:"+pageNUM);
 		totalRecord = bs.count();
 		
 		totalPage =(int) Math.ceil((double)totalRecord/pageSIZE);
 		int start = (pageNUM-1)*pageSIZE+1;
 		int end = start+pageSIZE-1;
-		
+		int startNum = totalRecord-((pageNUM-1)*pageSIZE);
+		int pageCount = totalRecord/pageSIZE + (totalRecord%pageSIZE == 0 ? 0 : 1);
+		pageGROUP = 5;
+		int startPage = (pageNUM-1)/pageGROUP * pageGROUP + 1;
+		int endPage = startPage + pageGROUP - 1;
+		if (endPage>pageCount) endPage = pageCount;
+
 		System.out.println("start:"+start);
 		System.out.println("end:"+end);
 		
+		List<BusRoad> list = bs.busroad_list_count(start, end);
+		for (BusRoad b : list) {
+		    int arrival = b.getArrival();
+		    int departure = b.getDeparture();
+		    
+		    BusStation bs_a = bss.getBusStation_no(arrival);
+			BusStation bs_b = bss.getBusStation_no(departure);
+			model.addAttribute("bs_a", bs_a); 
+			model.addAttribute("bs_b", bs_b); 
+		}
 		Member user = (Member) session.getAttribute("user");
-		model.addAttribute("list", bs.busroad_list_count(start, end)); 
+		model.addAttribute("list", list); 
 		model.addAttribute("totalPage", totalPage);
+		model.addAttribute("totalRecord", totalRecord);
+		model.addAttribute("pageCount", pageCount);
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
+		model.addAttribute("startNum", startNum);
+		model.addAttribute("pageGROUP", pageGROUP);
 		System.out.println("user:"+user);
 		model.addAttribute("user",user);
 		return "/busroad/list";
+		}
 	}
 
 	
@@ -81,16 +114,16 @@ public class BusroadController {
 	}
 	
 	@PostMapping("/busroad/insert")
-	public String insertSubmit(BusRoad b, HttpServletRequest req, @RequestParam("plus") String plus, HttpSession session) {
+	public String insertSubmit(BusRoad b, HttpServletRequest req, @RequestParam("plus") String plus, HttpSession session,
+			@RequestParam("dip_time") int dip_time) {
 		String view = "redirect:/busroad/list/1";
 		Bus bus = busservice.getBus(b.getBusno());
+		
 		//로그인사람의 정보를 가져오기위해
 		Authentication authentication
 		= SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 		String id = user.getUsername();
-		b.setArrival(bss.getBusStation_no(b.getArrival()).getStationno());
-		b.setDeparture(bss.getBusStation_no(b.getDeparture()).getStationno());
 		b.setId(id);
 		
 		if(bus.getGrade().equals("일반")){//일반버스일때 가격
@@ -102,7 +135,6 @@ public class BusroadController {
 		}
 		
 		if(plus.equals("plural")){//복수 노선 만들시
-			int dip_time= Integer.parseInt(req.getParameter("dip_time"));//배차시간 가져오기 
 			bs.insert(b);//기본적으로 선택된 bus노선 만들어주기
 			 
 			int a_time = b.getArrtime();
@@ -110,7 +142,7 @@ public class BusroadController {
 			
 			 for(int i=a_time; i<=22; i++){//필요한 버스 갯수 
 				a_time=b.getTottime()+dip_time;
-				if(a_time >=22){//페이지에 출발시간이 22시이후로는 설정못하게 되있어서 출발시간이 22시간 까지만 노선만들기위해
+				if(a_time >=22){//페이지에 출발시간이 22시이후로는 설정못하게 되있어서 출발시간이 22시간까지만 노선만들기위해
 					break;
 				}
 				bus_count++;
@@ -122,8 +154,8 @@ public class BusroadController {
 					 //버스추가후 노선생성
 					for(int j=0; j< bus_count; j++){
 						 busservice.insertBus_normal();//일반 버스 생성(버스가 노선갯수보다 하나더 만들어지게 설계됨)
-						 BusBusRoad bb1=bbs.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
-						 b.setBusno(bb1.getBusno());//bus_no 값을 bbdto1 객체에서 받아와 하나씩 넣어줌
+						 Map<String, Object> bb1=bbs.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
+						 b.setBusno((int)bb1.get("busno"));//bus_no 값을 bbdto1 객체에서 받아와 하나씩 넣어줌
 						 b.setArrtime(b.getArrtime()+b.getTottime()+dip_time);//출발시간 지속적으로 변경
 						
 						 if(b.getArrtime()>22){
@@ -134,8 +166,8 @@ public class BusroadController {
 					 }
 				 }else if(count>=bus_count){//버스갯수가 충분할때
 					 for(int j=0; j<bus_count; j++){
-						 BusBusRoad bb2=bbs.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
-						 b.setBusno(bb2.getBusno());
+						 Map<String, Object> bb2=bbs.bus_no_null_rownum();//bus_no 값 하나씩 출력하기 위해서
+						 b.setBusno((int)bb2.get("busno"));
 						 b.setArrtime(b.getArrtime()+b.getTottime()+dip_time);
 						 if(b.getArrtime()>22){
 							 break;

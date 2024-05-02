@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>결제 리스트</title>
+<style>
+	input, textarea {
+		background-color: #f1f4f5;
+	  	border: 1px solid #f1f4f5;
+	}
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript"> 
+	$(document).ready(function() {
+    	point(0);
+	});
+
+    $(document).ready(function() {
+        var priceone = parseInt($("#priceone").text()); // 값을 가져옴
+        var seatNoValue = parseInt($("#seatNoValue").text()); // 값을 가져옴
+        var arrprice = priceone * seatNoValue; // 계산
+        $("#arrprice").val(arrprice); // 값을 넣기
+        var depprice = parseInt($("#depprice").val());
+        var totprice = depprice + arrprice;
+        $("#price").val(totprice);
+        $("#tprice").val(totprice);
+
+        console.log("priceone:", priceone);
+        console.log("seatNoValue:", seatNoValue);
+        console.log("arrprice:", arrprice);
+        console.log("depprice:", depprice);
+    });
+    
+    function point(val) {
+    var usepoint = parseInt(val);
+    var mypoint = parseInt($("#mypoint").val());
+    var tprice = parseInt($("#tprice").val()); 
+    var price = parseInt($("#price").val()); // 총 가격을 정수로 변환
+    // 사용 포인트가 mypoint보다 클 경우 mypoint로 설정
+    if (usepoint > mypoint) {
+        usepoint = mypoint;
+        $("#use_point").val(usepoint);
+    }
+    // 사용 포인트가 총 가격을 초과하지 않도록 제한
+    if (usepoint > tprice) {
+        usepoint = tprice;
+        $("#use_point").val(usepoint);
+    }
+    price -= usepoint; // 사용 포인트를 차감
+    // 가격이 0 미만이면 0으로 설정
+    if (price < 0) {
+        price = 0;
+    }
+    $("#price").val(price); // 총 가격 업데이트
+    $("#updatetot").val(price); // 업데이트된 총 가격을 히든 필드에 설정
+    $("#save_point").val(parseInt(price * 0.1));
+    $("#usepoint").val(usepoint);
+	}
+	function clearDefaultValue(input) {
+        if (input.value === "0") {
+            input.value = "";
+        }
+    }
+</script>
+
+
+</head>
+<body>
+<div>
+    <div th:include="header.html"></div>
+    <div class="container justify-content-center">
+    <form action="/user_busresv/totpayok">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="hidden" name="arr_date" th:value="${arr_date}">
+        <input type="hidden" name="dep_date" th:value="${dep_date}">
+        <input type="hidden" name="roadno" th:value="${roadno}">
+        <input type="hidden" name="roadno_reverse" th:value="${roadno_reverse}">
+        <div th:each="seat : ${session.seat}">
+            <input type="hidden" name="seat" th:value="${seat}" />
+        </div>
+        <div th:each="seat_reverse : ${seat_reverse}">
+            <input type="hidden" name="seat_reverse" th:value="${seat_reverse}" />
+        </div>
+        <div align="center" style="display: inline-block;">
+        <table width="80%" class="outline table">
+			<thead class="table-primary">
+            <tr align="center">
+                <td colspan="4" th:text="${arr_date} +'(출발일)'"></td>
+            </tr>
+            </thead>
+            <tr>
+                <td colspan="2" th:text="'출발지: ' + ${bs_a.stationname}"></td>
+                <td colspan="2" th:text="'도착지: ' + ${bs_b.stationname}"></td>
+            </tr>
+            <tr>
+			    <td colspan="2">출발시간: <span th:text="${arrtime + '시'}"></span></td>
+			    <td colspan="2">도착시간: <span th:text="${arrtime + tottime + '시'}"></span></td>
+			</tr>
+			<tr>
+			    <td colspan="3">1장 가격: <span id="priceone" th:text="${price}"></span>원</td>
+			    <input type="hidden" name="arr_price" th:value="${price}">
+			    <td>인원수: <span id="seatNoValue" th:text="${session.seat_no}"></span>명</td>
+			</tr>
+			<tr>
+			    <td colspan="2">좌석번호: 
+			        <span th:each="seat : ${session.seat}" th:text="${seat} + '번 '"></span>
+			    </td>
+				<td colspan="2">총 가격: <input type="text" id="arrprice" disabled></td>
+			</tr>
+        </table>
+        </div>
+        <div align="center" style="display: inline-block;">
+		<table width="80%" class="outline table">
+			<thead class="table-primary">
+            <tr align="center">
+                <td colspan="4" th:text="${dep_date} +'(도착일)'"></td>
+            </tr>
+            </thead>
+            <tr>
+                <td colspan="2" th:text="'출발지: ' + ${bs_b.stationname}"></td>
+                <td colspan="2" th:text="'도착지: ' + ${bs_a.stationname}"></td>
+            </tr>
+            <tr>
+			    <td colspan="2">출발시간: <span th:text="${arrtime1 + '시'}"></span></td>
+			    <td colspan="2">도착시간: <span th:text="${arrtime1 + tottime1 + '시'}"></span></td>
+			</tr>
+			<tr>
+			    <td colspan="3">1장 가격: <span th:text="${price1}"></span>원</td>
+			    <input type="hidden" name="dep_price" th:value="${price1}">
+			    <td>인원수: <span th:text="${seat_no_reverse}"></span>명</td>
+			</tr>
+			<tr>
+			    <td colspan="2">좌석번호: 
+					<span th:each="seat_reverse : ${session.seat_reverse}" th:text="${seat_reverse} + '번 '"></span>
+			    </td>
+				<td colspan="2">총 가격: <input type="text" id="depprice" th:value="${price1*seat_no_reverse}" disabled></td>
+			</tr>
+        </table>
+        </div>
+		<div align="right">
+			<table width="80%" align="left">
+				<tr>
+					<td colspan="2">사용 포인트: <input type="text" id="use_point" onfocus="clearDefaultValue(this)" onkeyup="point(this.value)" value="0">점 </td>
+					<td colspan="2">총 포인트: <input type="text" id="mypoint" th:value="${mypoint}" disabled>점</td>
+				</tr>
+				<tr>
+				    <input type="hidden" id="usepoint" name="usepoint"> <!-- 사용 포인트를 서버로 전송하기 위한 히든 필드 -->
+				</tr>
+				<tr>
+					<td colspan="2">왕복 총 가격<input type="text" id="price" disabled></td>
+					<input type="hidden" id="tprice" >
+				</tr>
+				<tr align="right">
+					<td colspan="4"><input type="hidden" id="updatetot" name="updatetot"><input type="submit" value="결제" size="100"></td>
+					<input type="hidden" name="save_point" id="save_point">
+				</tr>
+			</table>
+		</div>
+    </form>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

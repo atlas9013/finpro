@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>호텔소개</title>
+<style>
+div.gallery {
+  margin: 5px;
+  border: 1px solid #ccc;
+  float: left;
+  width: 180px;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+div.desc {
+  padding: 5px;
+  text-align: center;
+}
+.center {
+  text-align: center;
+}
+.pagination {
+  display: inline-block;
+}
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+<script>
+    function toggleReplyForm(button) {
+        // Get the next sibling of the button, which is the reply form
+        var replyForm = button.nextElementSibling;
+        
+        // Toggle the display style of the reply form
+        if (replyForm.style.display === "none") {
+            replyForm.style.display = "block";
+        } else {
+            replyForm.style.display = "none";
+        }
+    }
+</script>
+</head>
+<body>
+<div th:include="header.html"></div>
+<input type="hidden" name="hotelno" th:value="${hotelno }">
+<div class="container justify-content-center">
+<div align="center">
+	<br />
+	<fieldset style="width: 600;">
+		<div>
+			<table>
+				<tr>
+					<td align="left" width="60%"><b>제목</b>&nbsp;&nbsp;&nbsp; : <b><span th:text="${getBoard.title}"></span></b></td>
+					<td width="12%">
+						<button style="background-color: #ECF0DF; border-radius: 30px;"><a th:href="@{'/hotel_board/list/'+${getBoard.hotelno}+'/1'}" th:text="뒤로가기"></a></button>
+					</td>
+				</tr>
+				<tr>
+					<td width="28%"><b>글쓴이</b> : <b><span th:text="${getBoard.id}"></span></b></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="3" th:if="${filearr != null}">
+						<div th:each="item : ${filearr}">
+						<div class="gallery" >
+						  <a target="_blank" th:href="'/images/hotelboard/'+${item}" th:attr="data-fileName=${item}">
+							<img style="height: 150px;" th:src="'/images/hotelboard/'+${item}" alt="Cinque Terre">
+						  </a>
+						  <div class="desc" th:text="크게보기"></div>
+						</div>
+						</div>
+					</td>
+					<td colspan="3" th:unless="${filearr != null}">
+						<span>[NO IMAGE]</span>
+					</td>
+				</tr>	
+				<tr>
+					<td colspan="3">
+						<textarea rows="20" cols="70" readOnly style="resize: none;" th:text="${getBoard.content}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<form name="f" action="/hotel_board/reinsert" method="post">
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+							<input type="hidden" th:value="${getBoard.hotelboardno }" th:name="hotelboardno"> 
+							<input type="hidden" th:value="${hotelno}" th:name="hotelno">
+							<input type="hidden" th:name="restep" th:value="${getBoard.restep}"> 
+							<input type="hidden" th:name="regroup" th:value="${getBoard.regroup}">
+							<input type="hidden" th:name="relevel" th:value="${getBoard.relevel}"> 
+							<input type="text" size="75" th:name="content">
+							<input type="submit" th:value="댓글달기">
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+					<table class="table">
+						<tr>
+							<td width="9%">이름</td>
+							<td width="66%" align="left">댓글</td>
+							<td width="9%">날짜</td>
+							<td>삭제</td>
+						</tr>
+						<th:block th:if="${#lists.isEmpty(listBoard)}">
+						<tr>
+							<td colspan="3">댓글없음</td>
+						</tr>
+						</th:block>
+						<tr th:each="b: ${listBoard}" align="left">
+						<th:block th:if="${b.id == getBoard.id}">
+							<td width="10%">☑️작성자</td>
+						</th:block>
+						<th:block th:unless="${b.id == getBoard.id}">
+							<td width="7%" th:text="${b.id}"></td>
+						</th:block>
+							<td width="65%" align="left" th:text="${b.content}"></td>
+							<td width="15%" th:text="${b.regdate}"></td>
+							<th:block th:if="${session.user.name == b.id}">
+							<td>
+								<a th:href="@{'/hotel_board/delete/'+${b.hotelboardno}+'?hotelno=' + ${hotelno}+'&no='+${hotelboardno}}" style="color: red;" th:text="삭제"></a>
+							</td>
+							</th:block>
+						</tr>
+					</table>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="center">
+				   			<div class="pagination">
+							<th:block th:if="${startPage > pageGROUP}">
+						    	<a th:href="@{'/hotel_board/content/'+${hotelno}+'/'+${hotelboardno}+'/' + ${startPage - 1}}">&laquo;이전</a>		
+							</th:block>
+							<th:block th:each="i : ${#numbers.sequence(startPage, endPage)}">
+						    	<a th:href="@{'/hotel_board/content/'+${hotelno}+'/'+${hotelboardno}+'/'+ ${i}}" th:text="${i}"></a>
+							</th:block>
+						
+							<th:block th:if="${endPage < pageCount}">
+							    <a th:href="@{'/hotel_board/content/'+${hotelno}+'/'+${hotelboardno}+'/' + ${endPage + 1}}">다음&laquo;</a>	
+							</th:block>
+				   		</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br />
+	</fieldset>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

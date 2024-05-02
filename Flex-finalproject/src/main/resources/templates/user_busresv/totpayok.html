@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script>
+    $(function(){
+        $("#btnPay").click(function(){
+            var name = $("#name").html();
+            var email = $("#email").html();
+            var tel = $("#phone").html();
+			var buyer_id = $("#id").val();
+            var item = $("#item").html();
+            var price = $("#price").html();
+            var data = {
+                pg: "kcp",
+                pay_method: "card",
+                merchant_uid: "flex_buspay_" + new Date().getTime(),
+                name: item,
+                amount: price.toString(), // amount를 문자열로 변환
+                buyer_email: email,
+                buyer_name: name,
+                buyer_tel: tel,
+                buyer_id: buyer_id 
+            }
+            
+            IMP.init("imp"); 
+            IMP.request_pay(data,
+            function(res){
+                if(res.success){
+                    console.log("결제완료");
+                    console.log("고유ID:" + res.imp_uid);
+                    console.log("상점거래 ID:" + res.merchant_uid);
+                    console.log("결제금액:" + res.paid_amount);
+                    console.log("카드승인번호:" + res.apply_num);
+                    data.imp_uid = res.imp_uid;
+                    data.apply_num = res.apply_num;
+                    data.buyer_id = $("#id").val();
+                    
+                    $.ajax({
+                        url: "/user_busresv/payment",
+                        data: data,
+                        success: function(re){
+                            location.href = "/user_busresv/paymentOK.html";
+                        }
+                    })
+                    
+                } else {
+                    console.log(res.error_msg);
+                    location.href = "/user_busresv/paymentError.html";
+                }
+            });
+        });
+    });
+</script>
+</head>
+<body>	
+	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
+	<h2>결제</h2>
+	<hr />
+	<br />
+	<table>
+		<tr>
+			<td>아이디</td>
+			<td><span th:text="${session.user.id}" id="id"></span></td>
+			<input type="hidden" id="id" name="id" th:value="${session.user.id}">
+		</tr>
+		<tr>
+			<td>고객명</td>
+			<td><span th:text="${session.user.name}" id="name"></span></td>
+		</tr>
+		<tr>
+			<td>이메일</td>
+			<td><span th:text="${session.user.email}" id="email"></span></td>
+		</tr>
+		<tr>
+			<td>전화번호</td>
+			<td><span th:text="${session.user.phone}" id="phone"></span></td>
+		</tr>
+		<tr>
+			<td>상품명</td>
+			<td><span th:text="${name}" id="item"></span></td>
+		</tr>
+		<tr>
+			<td>주문수량</td>
+			<td><span th:text="${qty}"></span></td>
+		</tr>
+		<tr>
+			<td>사용한 포인트</td>
+			<td><span th:text="${use_point}" id="use_point"></span></td>
+		</tr>
+		<tr>
+			<td>총 주문 금액 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><b><span th:text="${updatetot}" id="price"></span></b></td>
+		</tr>
+	</table>
+	<br />
+	<button id="btnPay">결제하기</button>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

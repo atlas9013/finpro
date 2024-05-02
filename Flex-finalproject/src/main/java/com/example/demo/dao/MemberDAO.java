@@ -45,17 +45,26 @@ public interface MemberDAO extends JpaRepository<Member, String> {
 	@Transactional
 	public int deleteMember(String id);
 	
-	// 아이디로 회원 찾기
-	public Optional<Member> findById(String id);
-		
 	// 이메일으로 회원 찾기
-	public Optional<Member> findByEmail(String email);
+	@Query(value = "select * from member where email = ?1", nativeQuery = true)
+	public Member findByEmail(String email);
 	
 	// 전화번호로 회원 찾기
-	public Optional<Member> findByPhone(String phone);
+	@Query(value = "select * from member where phone = ?1", nativeQuery = true)
+	public Member findByPhone(String phone);
 	
-//	// 비밀번호 변경
-//	public int changePwd(String id, String pwd);
+	// 비밀번호 변경
+	@Query(value = "update member set passwd=?2 where id = ?1", nativeQuery=true)
+	@Modifying
+	@Transactional
+	public int changePasswd(String id, String pwd);
+	
+	@Query(value = "select * from member", nativeQuery = true)
+	public List<Member> memberList();
+	
+	@Query(value = "select * from member where role=?1", nativeQuery = true)
+	public List<Member> getPosition(String role);
 
+	
 }
 

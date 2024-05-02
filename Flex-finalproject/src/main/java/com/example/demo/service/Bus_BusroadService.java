@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,7 @@ public class Bus_BusroadService {
 	public int bus_no_list_null_count() { 
 		return dao.bus_no_list_null_count();
 	}
-	public BusBusRoad bus_no_null_rownum() {
+	public Map<String, Object> bus_no_null_rownum() {
 		return dao.bus_no_null_rownum();
 	}
 	public void insert(BusBusRoad b) {

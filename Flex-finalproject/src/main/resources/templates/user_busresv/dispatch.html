@@ -2,156 +2,158 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
 </head>
 <body>
-	<div th:include="header.html"></div>
-	<h2>배차정보확인</h2>
-	<hr>
-	<th:block th:if="${mode == 'oneway'}">
-	<table border="1">
-		<tr align="center">
-			<td th:colspan="9" th:text="${one_date}"></td>
-		</tr>
-		<tr align="center">
-			<th>노선번호</th>
-	 		<th>출발지</th>
-	 		<th>도착지</th>
-	 		<th>등급</th>
-	 		<th>가격</th>
-	 		<th>출발시간</th>
-	 		<th>도착시간</th>
-	 		<th>좌석수</th>
-	 		<th>예약</th>
-		</tr>
-		<th:block th:if="${#lists.isEmpty(dispatch_list)}">
-		<tr align="center">
-        	<td colspan="9">해당되는 배차정보가 없습니다</td>
-    	</tr>
-		</th:block>
-		<th:block th:each="list: ${dispatch_list}">
-			<tr align="center">
-				<td th:text="${list.roadno}"></td>
-				<td th:text="${list.arrival}"></td>
-				<td th:text="${list.departure}"></td>
-				<td th:text="${list.grade}"></td>
-				<td th:text="${list.price}"></td>
-				<td th:text="${list.arrtime} + '시'"></td>
-				<div th:if="${list.tottime + list.arrtime > 24}">
-				    <td th:text="${list.tottime + list.arrtime - 24} + '시'"></td>
-				</div>
-				<div th:if="${list.tottime + list.arrtime <= 24}">
-				    <td th:text="${list.tottime + list.arrtime} + '시'"></td>
-				</div>
-				<td th:text="${list.seat}"></td>
-				<td>
-					<input type="hidden" name="one_date" th:value="${one_date}" />
-					<input type="hidden" name="mode" th:value="${mode}" />
-				    <a th:href="@{'/user_busresv/seat'}" th:text="예약"></a>
-				</td>
-			</tr>
-		</th:block>	
-	</table>
-	<hr>
-
-	<th:block th:if="${mode == 'twoway'}">
-	<table border="1">
-		<tr align="center">
-			<td th:colspan="9" th:text="${arr_date}"></td>
-		</tr>
-		<tr align="center">
-			<th>노선번호</th>
-	 		<th>출발지</th>
-	 		<th>도착지</th>
-	 		<th>등급</th>
-	 		<th>가격</th>
-	 		<th>출발시간</th>
-	 		<th>도착시간</th>
-	 		<th>좌석수</th>
-	 		<th>예약</th>
-		</tr>
-		<th:block th:if="${#lists.isEmpty(arr_dispatch_list)}">
-		<tr align="center">
-        	<td colspan="9">해당되는 배차정보가 없습니다</td>
-    	</tr>
-		</th:block>
-		<th:block th:each="list: ${arr_dispatch_list}">
-			<tr align="center">
-				<td th:text="${list.roadno}"></td>
-				<td th:text="${list.arrival}"></td>
-				<td th:text="${list.departure}"></td>
-				<td th:text="${list.grade}"></td>
-				<td th:text="${list.price}"></td>
-				<td th:text="${list.arrtime} + '시'"></td>
-				<div th:if="${list.tottime + list.arrtime > 24}">
-				    <td th:text="${list.tottime + list.arrtime - 24} + '시'"></td>
-				</div>
-				<div th:if="${list.tottime + list.arrtime <= 24}">
-				    <td th:text="${list.tottime + list.arrtime} + '시'"></td>
-				</div>
-				<td th:text="${list.seat}"></td>
-				<td>
-				    <input type="hidden" name="arr_date" th:value="${arr_date}" />
-					<input type="hidden" name="dep_date" th:value="${dep_date}" />
-					<input type="hidden" name="one_date" th:value="${one_date}" />
-					<input type="hidden" name="mode" th:value="${mode}" />
-					<input type="hidden" name="arrival" th:value="${arrival}" />
-					<input type="hidden" name="departure" th:value="${departure}" />
-					<input type="hidden" name="grade" th:value="${grade}" />
-				    <a th:href="@{'/user_busresv/arr_seat'}" th:text="예약"></a>
-				</td>
-			</tr>
-		</th:block>	
-	</table>
-	
-	<table border="1">
-		<tr align="center">
-			<td th:colspan="9" th:text="${dep_date}"></td>
-		</tr>
-		<tr align="center">
-			<th>노선번호</th>
-	 		<th>출발지</th>
-	 		<th>도착지</th>
-	 		<th>등급</th>
-	 		<th>가격</th>
-	 		<th>출발시간</th>
-	 		<th>도착시간</th>
-	 		<th>좌석수</th>
-	 		<th>예약</th>
-		</tr>
-		<th:block th:if="${#lists.isEmpty(dep_dispatch_list)}">
-		<tr align="center">
-        	<td colspan="9">해당되는 배차정보가 없습니다</td>
-    	</tr>
-		</th:block>
-		<th:block th:each="list: ${dep_dispatch_list}">
-			<tr align="center">
-				<td th:text="${list.roadno}"></td>
-				<td th:text="${list.arrival}"></td>
-				<td th:text="${list.departure}"></td>
-				<td th:text="${list.grade}"></td>
-				<td th:text="${list.price} + '원'"></td>
-				<td th:text="${list.arrtime} + '시'"></td>
-				<div th:if="${list.tottime + list.arrtime > 24}">
-				    <td th:text="${list.tottime + list.arrtime - 24} + '시'"></td>
-				</div>
-				<div th:if="${list.tottime + list.arrtime <= 24}">
-				    <td th:text="${list.tottime + list.arrtime} + '시'"></td>
-				</div>
-				<td th:text="${list.seat}"></td>
-				<td>
-				    <input type="hidden" name="arr_date" th:value="${arr_date}" />
-					<input type="hidden" name="dep_date" th:value="${dep_date}" />
-					<input type="hidden" name="one_date" th:value="${one_date}" />
-					<input type="hidden" name="mode" th:value="${mode}" />
-					<input type="hidden" name="arrival" th:value="${arrival}" />
-					<input type="hidden" name="departure" th:value="${departure}" />
-					<input type="hidden" name="grade" th:value="${grade}" />
-				    <a th:href="@{'/user_busresv/dep_seat'}" th:text="예약"></a>
-				</td>
-			</tr>
-		</th:block>	
-	</table>
-	<div th:include="footer.html"></div>
+    <div th:include="header.html"></div>
+    <div class="container justify-content-center">
+    <h2>배차정보확인</h2>
+    <hr>
+    <th:block th:if="${mode == 'oneway'}">
+        <h4>👉🏻편도</h4>
+        <table class="table table-hover">
+			<thead class="table-primary">
+            <tr align="center">
+                <td th:colspan="9" th:text="${one_date}"></td>
+            </tr>
+            <tr align="center">
+                <th>노선번호</th>
+                <th>출발지</th>
+                <th>도착지</th>
+                <th>등급</th>
+                <th>가격</th>
+                <th>출발시간</th>
+                <th>도착시간</th>
+                <th>좌석수</th>
+                <th>예약</th>
+            </tr>
+            </thead>
+            <th:block th:if="${#lists.isEmpty(dispatch_list)}">
+                <tr align="center">
+                    <td colspan="9">해당되는 배차정보가 없습니다</td>
+                </tr>
+            </th:block>
+            <th:block th:each="list: ${dispatch_list}">
+                <tr align="center">
+                    <td th:text="${list.roadno}"></td>
+                    <td th:text="${list.arrival}"></td>
+                    <td th:text="${list.departure}"></td>
+                    <td th:text="${list.grade}"></td>
+                    <td th:text="${list.price} + '원'"></td>
+                    <td th:text="${list.arrtime} + '시'"></td>
+                    <td th:text="${list.tottime + list.arrtime > 24 ? list.tottime + list.arrtime - 24 + '시' : list.tottime + list.arrtime + '시'}"></td>
+                    <td th:text="${list.seat}"></td>
+                    <td>
+                        <a th:href="@{'/user_busresv/seat?one_date=' + ${one_date} + '&roadno=' + ${list.roadno} + '&mode=' + ${mode} + '&arrival=' + ${list.arrival} + '&departure=' + ${list.departure}}">
+                            예약
+                        </a>
+                    </td>
+                </tr>
+            </th:block> 
+        </table>
+        <hr>
+    </th:block>
+    <th:block th:if="${mode == 'twoway'}">
+		<h4>👉🏻왕복 가는날👈🏻</h4>
+		<div align="center" style="display: inline-block;">
+        <table class="table table-hover">
+			<thead class="table-primary">
+            <tr align="center">
+                <td th:colspan="9" th:text="${arr_date}"></td>
+            </tr>
+            <tr align="center">
+                <th>노선번호</th>
+                <th>출발지</th>
+                <th>도착지</th>
+                <th>등급</th>
+                <th>가격</th>
+                <th>출발시간</th>
+                <th>도착시간</th>
+                <th>좌석수</th>
+                <th>예약</th>
+            </tr>
+            </thead>
+            <th:block th:if="${#lists.isEmpty(arr_dispatch_list)}">
+                <tr align="center">
+                    <td colspan="9">해당되는 배차정보가 없습니다</td>
+                </tr>
+            </th:block>
+            <th:block th:each="list: ${arr_dispatch_list}">
+                <tr align="center">
+                    <td th:text="${list.roadno}"></td>
+                    <td th:text="${list.arrival}"></td>
+                    <td th:text="${list.departure}"></td>
+                    <td th:text="${list.grade}"></td>
+                    <td th:text="${list.price} + '원'"></td>
+                    <td th:text="${list.arrtime} + '시'"></td>
+                    <td th:text="${list.tottime + list.arrtime > 24 ? list.tottime + list.arrtime - 24 + '시' : list.tottime + list.arrtime + '시'}"></td>
+                    <td th:text="${list.seat}"></td>
+                    <td>
+						<a th:href="@{'/user_busresv/arr_seat?arr_date=' + ${arr_date} + '&dep_date=' + ${dep_date} + '&one_date=' + '&mode=' + ${mode} + '&roadno=' + ${list.roadno} + '&arrival=' + ${list.arrival} + '&departure=' + ${list.departure} + '&grade=' + ${grade}}">
+						    예약
+						</a>
+                    </td>
+                </tr>
+        </table>
+        <hr>
+    	</div>
+    	<h4>👉🏻왕복 오는날👈🏻</h4>
+		<div align="center" style="display: inline-block;">
+        <table class="table table-hover">
+            <thead class="table-primary">
+            <tr align="center">
+                <td th:colspan="9" th:text="${dep_date}"></td>
+            </tr>
+            <tr align="center">
+                <th>노선번호</th>
+                <th>출발지</th>
+                <th>도착지</th>
+                <th>등급</th>
+                <th>가격</th>
+                <th>출발시간</th>
+                <th>도착시간</th>
+                <th>좌석수</th>
+                <th>예약</th>
+            </tr>
+            </thead>
+            <th:block th:if="${#lists.isEmpty(dep_dispatch_list)}">
+                <tr align="center">
+                    <td colspan="9">해당되는 배차정보가 없습니다</td>
+                </tr>
+            </th:block>
+            <th:block th:each="list: ${dep_dispatch_list}">
+                <tr align="center">
+                    <td th:text="${list.roadno}"></td>
+                    <td th:text="${list.arrival}"></td>
+                    <td th:text="${list.departure}"></td>
+                    <td th:text="${list.grade}"></td>
+                    <td th:text="${list.price} + '원'"></td>
+                    <td th:text="${list.arrtime} + '시'"></td>
+                    <td th:text="${list.tottime + list.arrtime > 24 ? list.tottime + list.arrtime - 24 + '시' : list.tottime + list.arrtime + '시'}"></td>
+                    <td th:text="${list.seat}"></td>
+                    <td>
+						<a th:href="@{'/user_busresv/dep_seat?arr_date=' + ${arr_date} + '&dep_date=' + ${dep_date} + '&one_date=' + '' + '&mode=' + ${mode} + '&roadno=' + ${list.roadno} + '&arrival=' + ${arrival} + '&departure=' + ${departure} + '&grade=' + ${grade}}">
+                            예약
+                        </a>
+                    </td>
+                </tr>
+            </th:block> 
+        </table>
+        <hr>
+    	</div>
+    </th:block> 
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    </div>
+    <div th:include="footer.html"></div>
 </body>
 </html>

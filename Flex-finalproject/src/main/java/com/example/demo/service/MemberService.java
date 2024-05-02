@@ -38,6 +38,10 @@ public class MemberService implements UserDetailsService {
 		dao.save(m);
 	}
 	
+	public void update(Member m ) {
+		dao.save(m);
+	}
+	
 	public int checkMember(String jumin1, String jumin2) {
 		return dao.checkMember(jumin1, jumin2);
 	}
@@ -79,19 +83,27 @@ public class MemberService implements UserDetailsService {
 	}
 	
 	// 이메일으로 회원 찾기
-	public Optional<Member> findByEmail(String email){
+	public Member findByEmail(String email){
 		return dao.findByEmail(email);
 	}
 	
 	// 전화번호로 회원 찾기
-	public Optional<Member> findByPhone(String phone){
+	public Member findByPhone(String phone){
 		return dao.findByPhone(phone);
 	}
 	
-//	// 비밀번호 변경
-//	public int changePwd(String id, String pwd) {
-//		return dao.changePwd(id, pwd);
-//	}
+	// 비밀번호 변경
+	public int changePasswd(String id, String pwd) {
+		return dao.changePasswd(id, pwd);
+	}
+	
+	public List<Member> memberList(){
+		return dao.memberList();
+	}
+	
+	public List<Member> getPosition(String role){
+		return dao.getPosition(role);
+	}
 		
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="styleCustomSubBtn.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+	input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+</style>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+<div align = "center">
+   <form action = "/superAD/member/update" method = "post" enctype="multipart/form-data">
+	   <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+   		<h3>
+			<span class="glyphicon glyphicon-th-list"></span>
+				회원 정보 수정
+		</h3>
+      <table class = "outline" border = "1">
+         <tr>
+      		<td rowspan="9"><img th:src="@{'/images/member/'+${m.filename}}" onerror="this.src='/images/noImage.jpg'" width="290" height="290" alt="image" border="0"></td>
+            <th align = "center">이름</th>
+            <td><input type="text" name="name" th:value="${m.name}" readonly></td>
+         </tr>
+         <tr>
+            <th align = "center">아이디</th>
+            <td><input type = "text" name = "id" th:value = "${m.id}" size = "10" readOnly></td>
+            <th align = "center">비밀번호</th>
+            <td><input type = "password" name = "passwd" th:value = "${m.passwd}" size = "10" required="required"></td>
+         </tr>
+         <tr>
+            <th align = "center">주민번호</th>
+            <td colspan = "3">
+               <input type = "text" name = "jumin1" th:value = "${m.jumin1}" size = "10" readOnly> - 
+               <input type = "password" name = "jumin2" th:value = "${m.jumin2}" size = "10" readOnly>
+            </td>
+         </tr>
+         <tr>
+            <th align = "center">이메일</th>
+            <td colspan = "3">
+               <input type = "text" name = "email" th:value = "${m.email}">
+            </td>
+         </tr>
+         <tr>
+            <th align = "center">전화번호</th>
+            <td colspan = "3">
+               <input type = "text" name = "phone" size = "13" maxlength = "13" th:value = "${m.phone}">
+            </td>
+         </tr>
+         <tr>
+		    <th align="center">포인트</th>
+		    <td colspan="3"><input type="text" name="point" th:value="${m.point}" size="5">점</td>
+		</tr>
+		<tr>
+		    <th align="center">성별</th>
+		    <td>
+		        <label><input type="radio" name="gender" th:value="0" th:checked="${m.gender == 0}">남자</label>
+		        <label><input type="radio" name="gender" th:value="1" th:checked="${m.gender == 1}">여자</label>
+		    </td>
+		</tr>
+         <th:block th:with="myArray=${#strings.arraySplit('alladmin,admin,hadmin,user', ',')}">
+	    <tr>
+	        <th align="center">회원 등급</th>
+	        <td>
+	            <select name="role">
+	                <th:block th:each="role : ${myArray}">
+	                    <option th:value="${role}" th:selected="${m.role == role}" th:text="${role}"></option>
+	                </th:block>
+	            </select>
+	        </td>
+	    </tr>
+		</th:block>
+
+
+         <tr>
+            <th align = "center">가입일</th>
+            <td colspan = "3"><input type = "text" name = "joindate" th:value = "${m.joindate}" size = "15" readOnly></td>
+         </tr>
+         <tr>
+  		 	<td>
+			    <span th:if="${m.filename != null}" th:text="${m.filename}"></span><br>
+			    <input type="hidden" name="filename" th:value="${m.filename}">
+			    <input type="file" name="uploadFile" th:value="업로드">
+			</td>
+            <td colspan = "4" align = "center">
+				<input class="customSubBtn" type="submit" value="수정"> 
+               	<input class="customSubBtn" type = "button" value = "돌아가기" onClick = "history.back()">
+            </td>
+         </tr>
+      </table>
+   </form>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

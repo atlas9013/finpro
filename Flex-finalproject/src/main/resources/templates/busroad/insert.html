@@ -2,7 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
+<style>
+	input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+</style>
 <script type="text/javascript">
 	function check(){
 		if (f.arrival.value==f.departure.value){
@@ -31,23 +38,43 @@
 		}
 	}
 </script>
+<style>
+    hr {
+      border: none; /* 기본 선 제거 */
+        border-top: 2px solid green; /* 두께, 색상 */
+        margin: 10px 0; /* 선과 주변 요소 간의 간격 조절 */
+        width: 750px;
+    }
+</style>
+
 </head>
 <body>
 	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
 	<h2>버스노선 등록</h2>
 	<hr>
 	<div align="center">
 		<form name="f" action="/busroad/insert" method="post">
 			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 			<h4>
-				*가격책정 방식*
-			</h4>
-			<h5>->일반:기본요금=5000원  x 소요시간</h5>
-			<h5>->우등:기본요금=8000원 x 소요시간</h5>
-			
+			 <div style="width: 650px; height: 120px; font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px;">
+			    <div style="text-align: center;">
+			        <i class="fa fa-bus" style="font-size:24px;"></i>
+			        <h5 style="display: inline-block; margin-left: 5px;">가격</h5>
+			    </div>
+			    <ul style="list-style-type: none; padding-left: 0;">
+			        <li style="margin-bottom: 10px;">
+			            <h6 style="margin: 0;"><strong>일반:</strong> 기본요금 = 5000원 x 소요시간</h6>
+			        </li>
+			        <li style="margin-bottom: 10px;">
+			            <h6 style="margin: 0;"><strong>우등:</strong> 기본요금 = 8000원 x 소요시간</h6>
+			        </li>
+			    </ul>
+			</div>
 			<table width="50%" border="1">
 				<tr>
 					<td>
+						<br />
 					    <input type="radio" name="plus" value="singular" checked="checked" th:onclick="'dip_OnOff(\'singular\', \'dip\');'">단일추가
 					    <input type="radio" name="plus" value="plural" th:onclick="'dip_OnOff(\'plural\', \'dip\');'">복수추가
 					</td>
@@ -102,7 +129,7 @@
 				<tr id="dip" style="display:none">
 					<td>배차시간: 
 						<select name="dip_time">
-							<option value="선택" selected>선택</option>
+							 <option value="0" selected>선택</option>
 							<option th:each="count : ${#numbers.sequence(1, 10)}" th:value="${count}" th:text="${count}"></option>
 						</select>
 					</td>
@@ -115,6 +142,17 @@
 				</tr>
 			</table>
 		</form>
+	</div>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
 	</div>
 	<div th:include="footer.html"></div>
 </body>

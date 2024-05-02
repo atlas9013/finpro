@@ -2,10 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
+<style>
+	input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+</style>
 </head>
 <body>
 	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
 	<h2>버스예약 수정</h2>
 	<hr>
 	<div align="center">
@@ -14,31 +22,42 @@
 			<input type="hidden" name="roadno" th:value="${br.resvno }">
 			<table width="100%">
 				<tr>
-				    <td>회원 번호 : <input type="text" name="id" th:value="${br.id}"></td>
+				    <td>회원번호&nbsp;&nbsp;&nbsp;&nbsp; : <input type="text" name="id" th:value="${br.id}"></td>
 				</tr>
 				<tr>
-				    <td>버스번호 : <input type="text" name="busno" th:value="${br.busno}"></td>
+				    <td>버스번호&nbsp;&nbsp;&nbsp;&nbsp; : <input type="text" name="busno" th:value="${br.busno}"></td>
 				</tr>
 				<tr>
-				    <td>노선번호 : <input type="text" name="roadno" th:value="${br.roadno}"></td>
+				    <td>노선번호&nbsp;&nbsp;&nbsp;&nbsp; : <input type="text" name="roadno" th:value="${br.roadno}"></td>
 				</tr>
 				<tr>
-				    <td>자리번호 : <input type="text" name="seat" th:value="${br.seat}"></td>
+				    <td>자리번호&nbsp;&nbsp;&nbsp;&nbsp; : <input type="text" name="seat" th:value="${br.seat}"></td>
 				</tr>
 				<tr>
-				    <td>사용한 포인트 : <input type="text" name="usepoint" th:value="${br.usepoint}"></td>
+				    <td>사용 포인트 : <input type="text" name="usepoint" th:value="${br.usepoint}"></td>
 				</tr>
 				<tr>
-				    <td>적립 : <input type="text" name="savepoint" th:value="${br.savepoint}"></td>
+				    <td>적립 포인트 : <input type="text" name="savepoint" th:value="${br.savepoint}"></td>
 				</tr>
 				<tr>
-				    <td>날짜 : <input type="text" name="resvdate" th:value="${br.resvdate}"></td>
+				    <td>예약날짜&nbsp;&nbsp;&nbsp;&nbsp; : <input type="text" name="resvdate" th:value="${br.resvdate}"></td>
 				</tr>
 				<tr>
 				    <td><input type="submit" value="수정"></td>
 				</tr>
 			</table>
 		</form>
+	</div>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
 	</div>
 	<div th:include="footer.html"></div>
 </body>

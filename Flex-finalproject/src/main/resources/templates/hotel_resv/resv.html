@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>결제 리스트</title>
+<style>
+	input, textarea {
+	background-color: #f1f4f5;
+  	border: 1px solid #f1f4f5;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript"> 
+$(document).ready(function() {
+    point(0);
+});
+// 포인트를 계산하고 화면에 업데이트하는 함수
+function point(val) {
+    var usepoint = parseInt(val);
+    if(isNaN(usepoint)) {
+        usepoint = 0;
+    }
+    var price = parseInt($("#price").val()); // 총 가격을 정수로 변환
+    var mypoint = parseInt($("#mypoint").val());
+    var tprice = parseInt($("#tprice").val()); 
+   // 사용 포인트가 mypoint보다 클 경우 mypoint로 설정
+    if (usepoint > mypoint) {
+        usepoint = mypoint;
+        $("#use_point").val(usepoint);
+    }
+    // 사용 포인트가 총 가격을 초과하지 않도록 제한
+    if (usepoint > tprice) {
+        usepoint = tprice;
+        $("#use_point").val(usepoint);
+    }
+    price -= usepoint; // 사용 포인트를 차감
+    // 가격이 0 미만이면 0으로 설정
+    if (price < 0) {
+        price = 0;
+    }
+    $("#price").val(price); // 총 가격 업데이트
+    $("#updatetot").val(price); // 업데이트된 총 가격을 히든 필드에 설정
+    $("#usepoint").val(usepoint);
+}
+function clearDefaultValue(input) {
+        if (input.value === "0") {
+            input.value = "";
+        }
+    }
+
+</script>
+</head>
+<body>
+<div>
+    <div th:include="header.html"></div>
+    <div class="container justify-content-center">
+    <form action="/hotel_resv/payok">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="hidden" name="startresvdate" th:value="${startresvdate}">
+        <input type="hidden" name="endresvdate" th:value="${endresvdate}">
+        <input type="hidden" name="save_point" th:value="${save_point}">
+        <input type="hidden" name="resvdate" th:value="${currentDateAndTime}">
+        <input type="hidden" name="resvdate" th:value="${currentDateAndTime}">
+        <input type="hidden" name="hotelno" th:value="${hotelno}">
+        <input type="hidden" name="roomno" th:value="${roomno}">
+        <table width="80%" class="outline table">
+            <tr align="center">
+                <td colspan="4" th:text="'예약일: ' +${currentDateAndTime}"></td>
+            </tr>
+            <tr>
+                <td colspan="2" th:text="'체크인: ' + ${startresvdate}"></td>
+                <td colspan="2" th:text="'체크아웃: ' + ${endresvdate}"></td>
+            </tr>
+            <tr>
+			    <td colspan="2">호텔이름: <span th:text="${h.name}"></span></td>
+			    <td colspan="2">방이름: <span th:text="${r.name}"></span></td>
+			</tr>
+			<tr>
+			    <td colspan="2">가격: <span th:text="${r.price} + '원'"></span></td>
+			    <input type="hidden" name="totprice" th:value="${r.price}">
+			    <td colspan="2">일수: <span th:text="${differenceInDays} + '일'"></span></td>
+			</tr>
+			<tr>
+			    <td colspan="2">멤버이름: <span th:text="${m.name}"></span></td>
+			</tr>
+			<tr>
+				<td colspan="2">사용 포인트: <input type="text" id="use_point" onfocus="clearDefaultValue(this)" onkeyup="point(this.value)" value="0">점</td>
+				<td colspan="2">총 포인트: <input type="text" id="mypoint" th:value="${mypoint}" disabled>점</td>
+			</tr>
+			<tr>
+			    <input type="hidden" id="usepoint" name="usepoint"> <!-- 사용 포인트를 서버로 전송하기 위한 히든 필드 -->
+			</tr>
+			<tr align="right">
+				<td colspan="4">총 가격: <input type="text" id="price" th:value="${r.price*differenceInDays}" disabled></td>
+				<input type="hidden" id="tprice" th:value="${r.price}" >
+			</tr>
+			<tr align="right">
+				<td colspan="4"><input type="hidden" id="updatetot" name="updatetot"><input type="submit" value="결제" size="100"></td>
+			</tr>
+        </table>
+    </form>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>

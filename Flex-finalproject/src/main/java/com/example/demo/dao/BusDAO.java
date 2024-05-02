@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Bus;
+import com.example.demo.entity.Hotel;
 
 import jakarta.transaction.Transactional;
 @Repository
@@ -15,6 +16,9 @@ public interface BusDAO extends JpaRepository<Bus, Integer> {
 	
 	@Query(value = "select * from Bus order by busno", nativeQuery = true)
 	public List<Bus> findAllByOrderByBusno();
+	
+	@Query(value = "select * from Bus where id=?1 order by busno", nativeQuery = true)
+	public List<Bus> ADlistBus(String id);
 	
 	@Query(value = "select nvl(max(busno),0)+1 from bus", nativeQuery = true)
 	public int getNextBusno();
@@ -28,7 +32,7 @@ public interface BusDAO extends JpaRepository<Bus, Integer> {
 	public List<Bus> bus_list_count(int start, int end);
 
 	@Modifying
-	@Query(value = "insert into bus values(bus_seq.nextval,'일반',30)",nativeQuery = true)
+	@Query(value = "insert into bus(busno, grade, seat) values(bus_seq.nextval,'일반',30)",nativeQuery = true)
 	@Transactional
-	public Bus insertBus_normal();
+	public int insertBus_normal();
 }

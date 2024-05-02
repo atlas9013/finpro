@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<style>
+	.fc-day-sun a {
+	  color: red;
+	  text-decoration: none;
+	}
+	
+	/* 토요일 날짜 파란색 */
+	.fc-day-sat a {
+	  color: blue;
+	  text-decoration: none;
+	}
+	.fc .fc-col-header-cell-cushion {
+	  display: inline-block;
+	  padding: 2px 4px;
+	}
+  .fc-event {
+    cursor: pointer;
+    padding: 5px 8px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .fc .fc-toolbar.fc-header-toolbar {
+    margin: 0;
+    padding: 0 40px;
+    background-color: #ECF0DF;
+    height: 63px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 29px;
+    color: black;
+    border-radius: 20px 20px 0px 0px;
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/dist/index.global.js"></script>
+<script>
+	$(function(){
+		var hotelno = $("#hotelno").val();
+		$.ajax({
+			url:"/hotelresv/listhotelresv",
+			data: { hotelno: hotelno },
+			success:function(arr){
+				var list = arr;
+				console.log(list);
+				var calendarEl = document.getElementById('calendar');
+				var events = list.map(function(item) {
+    				return {
+						id: item.hotelresvno,
+						title : item.roomno,
+						start : item.startresvdate,
+						end : item.endresvdate
+					}
+				});
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					height: 650,
+					ihandleWindowResize : true,
+					headerToolbar: {
+			          left: 'prev',
+			          center: 'title',
+			          right: 'next'
+			        },
+		          events: events,
+		          eventClick: function(info) {
+					    const eventId = info.event.id;
+					    window.location.href = `/hotelAD/hotel_resv/content/${eventId}`;
+					}
+		        });
+        		calendar.render();
+			}
+		});
+
+	});
+</script>
+</head>
+<body>
+<div th:include="header.html"></div>
+<div class="container justify-content-center">
+	<h2 th:text="${h.name}" align="center"></h2>
+	<div id='calendar'></div>
+	<input type="hidden" id="hotelno" name="hotelno" th:value="${hotelno}">
+	<hr>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

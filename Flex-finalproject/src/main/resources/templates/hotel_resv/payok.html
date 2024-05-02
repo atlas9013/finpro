@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script>
+    $(function(){
+        $("#btnPay").click(function(){
+            var name = $("#name").html();
+            var email = $("#email").html();
+            var tel = $("#phone").html();
+            var item = $("#item").html();
+            var price = $("#price").html();
+            var buyer_id = $("#id").val();
+            var resvno = $("#resvno").val();
+            var usepoint = $("#usepoint").val();
+            var data = {
+                pg: "kcp",
+                pay_method: "card",
+                merchant_uid: "flex_hotelpay_" + new Date().getTime(),
+                name: item,
+                amount: price.toString(), // amount를 문자열로 변환
+                buyer_email: email,
+                buyer_name: name,
+                buyer_tel: tel,
+                buyer_id: buyer_id,
+                resvno: resvno
+            }
+            
+            IMP.init("imp"); 
+            IMP.request_pay(data,
+            function(res){
+				console.log(res)
+				console.log(buyer_id)
+                if(res.success){
+                    console.log("결제완료");
+                    console.log("고유ID:" + res.imp_uid);
+                    console.log("상점거래 ID:" + res.merchant_uid);
+                    console.log("결제금액:" + res.paid_amount);
+                    console.log("카드승인번호:" + res.apply_num);
+                    data.imp_uid = res.imp_uid;
+                    data.apply_num = res.apply_num;
+                    data.buyer_id = $("#id").val();
+                    data.resvno = $("#resvno").val();
+                    
+                    $.ajax({
+                        url: "/hotel_resv/payment",
+                        data: data,
+                        success: function(re){
+							var hotelresvno = $("#hotelresvno").html();
+                            location.href = "/hotel_resv/paymentOK.html";
+                        }
+                    })
+                    
+                } else {
+				    console.log(res.error_msg);
+				    location.href = "/hotel_resv/paymentError.html?usepoint=" + usepoint;
+				}
+            });
+        });
+    });
+</script>
+</head>
+<body>	
+	<div th:include="header.html"></div>
+	<div class="container justify-content-center">
+	<h2>결제</h2>
+	<hr />
+	<br />
+	<table>
+		<input type="hidden" id="hotelno" name="hotelno" th:value="${hotelno}">
+		<input type="hidden" id="roomno" name="roomno" th:value="${roomno}">
+		<input type="hidden" id="resvno" name="resvno" th:value="${resvno}">
+		<tr>
+			<td>아이디</td>
+			<td><span th:text="${session.user.id}"></span></td>
+			<input type="hidden" id="id" name="id" th:value="${session.user.id}">
+		</tr>
+		<tr>
+			<td>고객명</td>
+			<td><span th:text="${session.user.name}" id="name"></span></td>
+		</tr>
+		<tr>
+			<td>이메일</td>
+			<td><span th:text="${session.user.email}" id="email"></span></td>
+		</tr>
+		<tr>
+			<td>전화번호</td>
+			<td><span th:text="${session.user.phone}" id="phone"></span></td>
+		</tr>
+		<tr>
+			<td>상품명</td>
+			<td><span th:text="${name}" id="item"></span></td>
+		</tr>
+		<tr>
+			<td>일수</td>
+			<td><span th:text="${differenceInDays}" id="item"></span></td>
+		</tr>
+		<tr>
+			<td>사용한 포인트</td>
+			<td><span th:text="${use_point}" id="use_point"></span></td>
+			<input type="hidden" name="usepoint" id="usepoint" th:value="${use_point}">
+		</tr>
+		<tr>
+			<td>총 주문 금액 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td><b><span th:text="${updatetot}" id="price"></span></b></td>
+		</tr>
+	</table>
+	<br />
+	<button id="btnPay">결제하기</button>
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	</div>
+	<div th:include="footer.html"></div>
+</body>
+</html>

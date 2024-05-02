@@ -25,23 +25,29 @@ import jakarta.servlet.http.HttpSession;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	
 	@Autowired
 	private MemberDAO dao;
-
+	
+	@Autowired
+	CustomSuccessHandler handler;
+	
+	@Autowired
+	KakaoOAuth2UserService kakaoOAuth2UserService;
+	
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+		
 		http.authorizeHttpRequests()
-		.requestMatchers("/", "/member/login", "/member/join", "/bus/list/**","/busstation/list/**","/busresv/list/**","/busroad/list/**", "user_busstation/**", "user_busresv/**" ).permitAll()
-		.requestMatchers("/admin/**", "/goods/insert", "/bus/insert", "/bus/update","/busstation/insert", "/busstation/update", "/busresv/insert", "/busresv/update",
-				"/busroad/insert/**", "/busroad/update/**").hasAnyRole("admin", "alladmin")
-		.requestMatchers("/mypage/**").hasRole("user")
+		.requestMatchers("/", "/member/login", "/member/join", "/member/mypage", "/bus/list/**","/busstation/list/**","/busresv/list/**","/busroad/list/**", "/hotel/**", "/hotel/hotelcontent/**","/room/list/**", "/room/roomcontent/**", "/user_busstation/**", "/user_busresv/**", "/hotel_board/**", "/hotel_resv/**", "/superAD/member/**" ).permitAll()
+		.requestMatchers("/goods/insert", "/bus/**","/busstation/**", "/busresv/**",
+				"/busroad/**", "/member/**", "/user_busstation/**", "/user_busresv/**", "/hotel/**","/hotel_resv/**", "/hotel_board/**", "/hotelAD/**", "/superAD/**" ).hasAnyRole("admin", "alladmin", "hadmin")
+		//.requestMatchers().hasRole("user")
 		.anyRequest().authenticated();
 		
 		http.formLogin().loginPage("/member/login").permitAll()
 		.successHandler(successHandler()).failureHandler(failureHandler())
-		.defaultSuccessUrl("/goods/list");
+		.defaultSuccessUrl("/");
 		
 		http.logout()
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -75,7 +81,7 @@ public class SecurityConfig {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
 			
-//			if(u.getRole()=="user") {
+//			if(user.getRole()=="user") {
 //				response.sendRedirect("/");				
 //			} else {
 //				response.sendRedirect("/adminDashBoard");
@@ -92,8 +98,7 @@ public class SecurityConfig {
 			String error = exception.getMessage();
 			System.out.println("error : " + error);
 			request.setAttribute("error", error);
-			response.sendRedirect("/userinfo/login");
-
+			response.sendRedirect("/member/login");
 		}
 	}
 

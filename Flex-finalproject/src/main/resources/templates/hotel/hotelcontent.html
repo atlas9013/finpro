@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>호텔소개</title>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=|Roboto+Sans:400,700|Playfair+Display:400,700">
+<link rel="stylesheet" href="/ionicons/css/ionicons.min.css">
+<link rel="stylesheet" href="/fontawesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/bootstrap2.min.css">
+<link rel="stylesheet" href="/css/animate.css">
+<script>
+var index = 0;
+window.onload = function(){
+	slideShow();
+}
+
+function slideShow(){
+	var i;
+	var x = document.getElementsByClassName("slide");
+	
+	// 모든 이미지를 숨김
+	for(i=0;i<x.length;i++){
+		x[i].style.display = "none";
+	}
+	index++;
+	if(index > x.length){
+		index=1;
+	}
+	x[index-1].style.display = "block";
+	setTimeout(slideShow,2500);
+}
+</script>
+</head>
+<body>
+<div th:include="header.html"></div>
+
+<section class="py-5 bg-light">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-12 col-lg-7 ml-auto order-lg-2 position-relative mb-5" data-aos="fade-up">
+            <figure class="img-absolute" th:each="item : ${filearr}">
+              <img width="400px" height="300px" class="slide" th:src="'/images/hotels/'+${item}">
+            </figure>
+          </div>
+          <div class="col-md-12 col-lg-4 order-lg-1" data-aos="fade-up">
+            <h2 class="heading" th:text="${h.name }">!</h2>
+            <span th:each="i : ${#numbers.sequence(1, h.star)}" style="color: red;">★</span></p>
+            <p class="mb-4" th:text="${h.info}"></p>
+            <p class="mb-4" th:text="'TEL📞 :'+ ${h.phone}">
+            <p class="mb-4" th:text="'ADDR🏠 :'+ ${h.address}"></p>
+            <p><a th:href="@{'/room/list/'+${h.hotelno}}" class="btn btn-primary text-white py-2 mr-3">Room List</a><a th:href="@{'/hotel_resv/hotel_resv'}" class="btn btn-primary text-white py-2 mr-3">Hotel Resv</a> <span class="mr-3 font-family-serif"><em>or</em></span> <a th:href="@{'/hotel/list/1'}" data-fancybox class="text-uppercase letter-spacing-1">Hotel List</a></p>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+    
+<input type="hidden" name="hotelno" th:value="${h.hotelno }">
+<div class="container justify-content-center">
+<div align="center">
+	<th:block th:if="${session.user.role == 'hadmin' || session.user.role == 'alladmin'}">
+	<table class="table">
+		<tr height="30">
+			<td colspan="2" align="left">
+				<button style="background-color: #ECF0DF; border-radius: 30px;"><a th:href="@{'/room/insert/'+${h.hotelno}}" th:text="룸입력"></a></button>
+			    &nbsp;&nbsp;&nbsp;&nbsp;
+			    <button style="background-color: #ECF0DF; border-radius: 30px;"><a th:href="@{'/room/list/'+${h.hotelno}}" th:text="룸리스트"></a></button>
+			    &nbsp;&nbsp;&nbsp;&nbsp;
+			</td>
+			<td colspan="4" align="right">
+				<button style="background-color: #ECF0DF; border-radius: 30px;"><a th:href="@{'/hotel/update/'+${h.hotelno}}" th:text="호텔수정"></a></button>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<button style="background-color: #ECF0DF; border-radius: 30px;"><a th:href="@{'/hotel/delete/'+${h.hotelno}}" th:text="호텔삭제"></a></button>
+			</td>
+		</tr>
+	</table>
+	</th:block>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+</div>
+<div th:include="footer.html"></div>
+</body>
+</html>
